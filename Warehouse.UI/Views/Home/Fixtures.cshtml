@@ -1,0 +1,76 @@
+﻿@section Sub{
+    @Html.Action("Pages", "PartialView")
+}
+
+<!-- page title & breadcrumbs start -->
+<div>
+    <div class="bdcmb-bg1 page-head parallax overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title text-center">
+                        <h3 id="title">FIXTURE</h3>
+                    </div>
+                </div>
+                <!-- /.colour-service-1-->
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="index.html">home</a></li>
+                        <li>।</li>
+                        <li>club list</li>
+                        <li>।</li>
+                        <li>{{nameStanding}}</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.page-header -->
+    <!-- page title & breadcrumbs end -->
+    <!--fixtures area start-->
+    <div class="laliga-box pad60">
+        <div class="container">
+            <div class="form-group">
+                <select class="form-control"
+                        id="sel1"
+                        ng-model="leagueId"
+                        ng-options="item as item.league_name + ' - ' + item.league_season for item in listLeague track by item.league_id"
+                        ng-change="getCalendar()">
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="text-center"><img src={{imgStanding}} height="70" /></h4>
+                    <div class="fixture-box bb-1" ng-repeat="item in listResult" ng-show="tt">
+                        <div class="club-fixture">
+                            <div class="club-img">
+                                <img class="sm-img" src={{item.team_home_badge}} alt="club logo">
+                                <span>{{item.match_hometeam_name}}</span>
+                            </div>
+                            <div class="club-schedule text-center">
+                                @*<h5>2018-june-20 12.00 am</h5>*@
+                                <h5>{{item.match_date}}</h5>
+                                <p>{{item.match_time}}</p>
+                            </div>
+                            <div class="club-img">
+                                <span>{{item.match_awayteam_name}}</span>
+                                <img class="sm-img" src={{item.team_away_badge}} alt="club logo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fixture-box bb-1" ng-show="!tt">
+                        <div class="club-fixture text-danger">
+                            {{listFixture}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--fixtures area end-->
+</div>
+

@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.BodyId = "module-iqitemailsubscriptionconf-subscription";
+    ViewBag.BodyClass = "lang-en country-us currency-usd layout-full-width page-tax-display-disabled body-desktop-header-style-w-4";
+}
+
+<section id="wrapper">
+    <div id="inner-wrapper" class="container">
+        <aside id="notifications"></aside>
+        <div id="content-wrapper">
+            <section id="main">
+                <section id="content" class="page-content">
+                    <h1 class="h1 page-title"><span>@ViewBag.Title</span></h1>
+                    @Html.ValidationSummary("",new { @class="alert alert-danger" })
+                </section>
+            </section>
+        </div>
+    </div>
+
+</section>

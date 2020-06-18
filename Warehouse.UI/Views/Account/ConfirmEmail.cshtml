@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Xác thực Email thành công";
+}
+
+<div class="match-box pad60">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <hgroup>
+                    <h2>@ViewBag.Title.</h2>
+                    <p>
+                        Bạn đã xác thực Email thành công. Vui lòng @Html.ActionLink("Click vào đây để đăng nhập", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                    </p>
+                </hgroup>
+            </div>
+        </div>
+    </div>
+</div>
+
+

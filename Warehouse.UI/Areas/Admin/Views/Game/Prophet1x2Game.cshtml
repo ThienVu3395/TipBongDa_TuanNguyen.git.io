@@ -1,0 +1,167 @@
+﻿@model List<Prophet1x2Game>
+@{
+    ViewBag.Title = "Giải Nhà Tiên Tri 1x2";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $(document).on("show.bs.modal", "#modal-createProphet1x2Game", function (e) {
+                var link = $(e.relatedTarget);
+                $(this).find(".modal-content").html("");
+                $(this).find(".modal-content").load(link.attr("href"));
+            });
+            $(document).on("show.bs.modal", "#modal-editProphet1x2Game", function (e) {
+                var link = $(e.relatedTarget);
+                $(this).find(".modal-content").html("");
+                $(this).find(".modal-content").load(link.attr("href"));
+            });
+            $(document).on("submit", "form[name=frm]", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "Post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.status == 1) {
+                            window.location.reload();
+                        }
+                        else {
+                            ShowPopUpError(result.message);
+                        }
+                    },
+                    error: function () {
+                        ShowPopUpError("Lỗi ajax!");
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <p>
+                        <a data-toggle="modal" href="@Url.Action("_CreateProphet1x2GameModal")" class="btn bg-green btn-sm" data-target="#modal-createProphet1x2Game">Thêm mới</a>
+                    </p>
+                    <div class="table-responsive">
+                        <table id="tblData" class="table table-bordered table-middle" ng-init="getLeague(@ViewBag.CountryId)">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Vòng Đấu</th>
+                                    <th class="text-center">Kích Hoạt</th>
+                                    <th class="text-center">Trao Thưởng</th>
+                                    <th>Ngày Tạo</th>
+                                    <th>Thành Viên Tạo</th>
+                                    <th>Số Trận Đấu</th>
+                                    <th class="text-center col-sm-2">Sửa/Xóa</th>
+                                    <th>Quản Lý Trận Đấu</th>
+                                    <th>Thành Viên Tham Gia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            Vòng @item.Round
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.Active)
+                                            {
+                                                <label class="label label-success"><i class="fa fa-check"></i> Đang Kích Hoạt</label>
+                                            }
+                                            else
+                                            {
+                                                <label class="label label-default">Không Kích Hoạt</label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.Awarded)
+                                            {
+                                                <span><i class="fa fa-check"></i> Đã Trao Thưởng</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Chưa Trao Thưởng</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <span>@Warehouse.Common.Format.FormatDateTime(item.CreatedDated)</span>
+                                        </td>
+                                        <td>
+                                            @item.CreatedUser
+                                        </td>
+                                        <td>
+                                            @item.Prophet1x2GameDetails.Count trận
+                                        </td>
+                                        <td class="text-center col-sm-2">
+                                            <a href="@Url.Action("_EditProphet1x2GameModal",new { Id = item.Id })" class="btn bg-blue btn-sm" data-toggle="modal" data-target="#modal-editProphet1x2Game"><i class="fa fa-edit"></i> Sửa</a>
+                                            <form class="hidden" id="frmDelete_@item.Id" action="@Url.Action("DeleteProphet1x2Game",new { Id = item.Id })" method="post">
+                                                @Html.AntiForgeryToken()
+                                            </form>
+                                            <a href="javascript:void(0)" onclick="if (confirm('Xác nhận xóa vòng @(item.Round) ?')) {
+                                                    document.getElementById('frmDelete_@item.Id').submit();
+                                                }" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Xóa</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("ViewProphet1x2GameDetail",new { Id = item.Id })" class="btn bg-blue btn-sm" title="Xem danh sách các trận đấu của vòng @item.Round"><i class="fa fa-list"></i> Quản Lý Trận Đấu</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("ViewListPlayerProphet1x2Game",new { prophet1x2GameId = item.Id })" title="Xem danh sách thành viên tham gia dự đoán vòng @item.Round" class="btn bg-green btn-sm"><i class="fa fa-user"></i> Xem Danh Sách</a>
+                                        </td>
+                                    </tr>
+                                }
+                        </table>
+                    </div>        
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<div class="modal fade" id="modal-createProphet1x2Game">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-content">
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-editProphet1x2Game">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-content">
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

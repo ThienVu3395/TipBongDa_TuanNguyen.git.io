@@ -1,0 +1,128 @@
+﻿@model List<Handbook>
+@{
+
+    ViewBag.Title = "Cẩm Nang";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#tblData').DataTable({
+                ordering: false
+            });
+           
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <p>
+                        <a href="@Url.Action("Create")" class="btn bg-green btn-xs" ><i class="fa fa-plus"></i> Viết Bài Mới</a>
+                    </p>
+                    <div class="table-responsive">
+                        <table id="tblData" class="table table-bordered table-middle" method="post">
+                            <thead>
+                                <tr>
+                                    <th>Hình ảnh</th>
+                                    <th class="hidden">Mã số</th>
+                                    <th class="col-sm-3">Tiêu đề</th>
+                                    <th>Tác giả</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Lần sửa cuối</th>
+                                    <th>Nổi bật</th>
+                                    <th>Hiển thị</th>
+                                    <th class="col-sm-2 text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td class="text-center">
+                                        <img src="~/Photos/Handbooks/@item.Image" width="100" height="auto" />
+                                    </td>
+                                    <td class="hidden">
+                                        @item.Id
+                                    </td>
+                                    <td>
+                                        <b><a href="@Url.Action("Details","Handbook",new { alias = item.Alias, area="" })" target="_blank">@item.Title</a></b>
+                                    </td>
+                                    <td>
+                                        @item.Author
+                                    </td>
+                                    <td>
+                                        @Warehouse.Common.Format.FormatDateTime(item.DateCreated)
+                                    </td>
+                                    <td>
+                                        @if (item.LastModified.HasValue)
+                                        {
+                                            @Warehouse.Common.Format.FormatDateTime(item.LastModified.Value)
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.IsHighlight == true)
+                                        {
+                                            <label class="label label-danger">Nổi bật</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="label label-default">Mặc định</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.Display != null && item.Display == true)
+                                        {
+                                            <label class="label label-success">Hiển thị</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="label label-danger">Ẩn</label>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("Details", new { Id = item.Id })"><i class="fa fa-eye"></i> Xem</a>
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("Edit", new { Id = item.Id })"><i class="fa fa-edit"></i> Sửa</a>
+
+                                        <form class="hidden" id="frmDelete_@item.Id" action="@Url.Action("Delete",new { Id = item.Id })" method="post">
+                                            @Html.AntiForgeryToken()
+                                        </form>
+                                        <button class="btn bg-red btn-xs" onclick="if(confirm('Xác nhận xóa bài viết này?')) { document.getElementById('frmDelete_@item.Id').submit();  }"><i class="fa fa-remove"></i> Xóa</button>
+                                    </td>
+
+                                </tr>
+                                }
+
+                        </table>
+                    </div>
+                </div>
+                <!-- /.box-body -->       
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

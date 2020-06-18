@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Danh Sách Giải Đấu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#frm").submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: $(this).attr("method"),
+                    data: $(this).serialize(),
+                    beforeSend: function () {
+                         $("#loader").removeClass("hidden");
+                    },
+                    success: function (result) {
+                        $("#loader").addClass("hidden");
+                        $("#resultAPI").html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div ng-init="getCountry()">
+                        <form class="form-inline" action="@Url.Action("GetLeagueByCountryId")" method="post" id="frm">
+                            <div class="form-group">
+                                <label for="countryId">Chọn Quốc Gia</label>
+                                <select class="form-control" id="countryId" name="countryId">
+                                    <option ng-repeat="item in listCountries" value="{{ item.country_id }}">{{ item.country_name }}</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Xem</button>
+                            <div class="form-group">
+                                <img src="~/Content/images/loader.gif" id="loader" class="hidden" />
+                            </div>
+                        </form>
+                    </div>
+                    <div id="resultAPI">
+                        @Html.Action("GetLeagueByCountryId",new { countryId = ViewBag.CountryId })
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

@@ -1,0 +1,131 @@
+﻿@model List<Prophet1x2GameDetail>
+@{
+    ViewBag.Title = "Danh Sách Trận Vòng " + ViewBag.Round + " Giải Nhà Tiên Tri 1x2";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $(document).on("show.bs.modal", "#modal-editProphet1x2GameDetail", function (e) {
+                var link = $(e.relatedTarget);
+                $(this).find(".modal-content").html("");
+                $(this).find(".modal-content").load(link.attr("href"));
+            });
+            $(document).on("submit", "form[name=frm]", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "Post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.status == 1) {
+                            window.location.reload();
+                        }
+                        else {
+                            ShowPopUpError(result.message);
+                        }
+                    },
+                    error: function () {
+                        ShowPopUpError("Lỗi ajax!");
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table id="tblData" class="table table-bordered table-middle" ng-init="getLeague(@ViewBag.CountryId)">
+                            <thead>
+                                <tr>
+                                    <th>Giải Đấu</th>
+                                    <th>Đội Nhà</th>
+                                    <th>Đội Khách</th>
+                                    <th>Ngày Đá</th>
+                                    <th>Giờ Đá</th>
+                                    <th class="text-center">Tỉ Số</th>
+                                    <th class="text-center">Cập Nhật Tỉ Số</th>
+                                    <th class="text-center">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @item.league_name
+                                    </td>
+                                    <td>
+                                        @item.match_hometeam_name
+                                    </td>
+                                    <td>
+                                        @item.match_awayteam_name
+                                    </td>
+                                    <td>
+                                        @item.match_date
+                                    </td>
+                                    <td>
+                                        @item.match_time
+                                    </td>
+                                    <td class="text-center">
+                                        @item.match_hometeam_score  - @item.match_awayteam_score
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("_EditProphet1x2GameDetailModal",new { Id = item.Id })" class="btn bg-blue btn-sm" data-toggle="modal" data-target="#modal-editProphet1x2GameDetail"><i class="fa fa-edit"></i> Cập Nhật</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <form method="post" action="@Url.Action("DeleteProphet1x2GameDetailModal",new { Id = item.Id })">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-default btn-sm" onclick="return confirm('Xác nhận xóa trận này khỏi vòng @(ViewBag.Round)?')"><i class="fa fa-remove"></i> Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                }
+                        </table>
+                    </div>        
+                </div>
+                <div class="box-footer">
+                    <a href="@Url.Action("Prophet1x2Game")" class="btn btn-default">Trở về</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+
+<div class="modal fade" id="modal-editProphet1x2GameDetail">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-content">
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

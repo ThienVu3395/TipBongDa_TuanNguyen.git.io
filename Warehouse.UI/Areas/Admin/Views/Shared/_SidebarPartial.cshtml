@@ -1,0 +1,169 @@
+﻿@{
+    //string countProductsHide = Html.Action("CountHide", "Product").ToString();
+    //string countProductsDisplay = Html.Action("CountDisplay", "Product").ToString();
+    //string countBlogHide = Html.Action("CountHide", "Blog").ToString();
+    //string countBlogDisplay = Html.Action("CountDisplay", "Blog").ToString();
+    //string CountOrderWaitConfirm = Html.Action("CountOrderWaitConfirm", "Order").ToString();
+}
+<section class="sidebar">
+    <!-- Sidebar user panel -->
+    @Html.Action("_UserPanelPartial", "AspNetUser")
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">TRANG QUẢN TRỊ</li>
+        <li id="home">
+            <a href="@Url.Action("Index","Dashboard")">
+                <i class="fa fa-dashboard"></i> <span>Bảng điều khiển</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","League")">
+                <i class="fa fa-globe"></i>
+                <span>Giải Đấu</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","Calendar")">
+                <i class="fa fa-calendar"></i>
+                <span>Lịch Thi Đấu</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","Result")">
+                <i class="fa fa-table"></i>
+                <span>Kết Quả Trận Đấu</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","RankTable")">
+                <i class="glyphicon glyphicon-equalizer"></i>
+                <span>Bảng Xếp Hạng</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index", "Player")">
+                <i class="glyphicon glyphicon-user"></i> Cầu Thủ
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index", "Club")">
+                <i class="glyphicon glyphicon-star"></i> Câu Lạc Bộ
+            </a>
+        </li>
+
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-files-o"></i>
+                <span>Giải Đấu</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a href="@Url.Action("GoldenGoalGame", "Game")">
+                        <i class="fa fa-play text-warning"></i> Bàn Thắng Vàng <span data-toggle="tooltip" title="Cài Đặt Giải Bàn Thắng Vàng" class="label label-primary pull-right"></span>&nbsp;
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Prophet1x2Game", "Game")">
+                        <i class="fa fa-futbol-o"></i> Nhà Tiên Tri 1x2 <span data-toggle="tooltip" title="Cài Đặt Giải Nhà Tiên Tri 1x2" class="label label-primary pull-right"></span>&nbsp;
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        @*@{ Html.RenderAction("_MenuArticlePartial", "Article");}*@
+
+
+        <li>
+            <a href="@Url.Action("Index","ForumCategory")">
+                <i class="glyphicon glyphicon-book"></i> <span>Chủ Đề Diễn Đàn</span>
+            </a>
+        </li>
+
+        <li id="customers">
+            <a href="@Url.Action("Members","AspNetUser")">
+                <i class="fa fa-users"></i> <span>Thành Viên</span>
+            </a>
+        </li>
+
+        <li id="slides">
+            <a href="@Url.Action("Index","Slide")">
+                <i class="fa fa-picture-o"></i> <span>Slider Hình</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index", "Article", new { articleCategoryId = 1 })">
+                <i class="fa fa-files-o"></i> Nhận Định & Tips
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index", "Article", new { articleCategoryId = 4 })">
+                <i class="fa fa-files-o"></i> Chính Sách & Thông Tin
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","Blog")">
+                <i class="fa fa-files-o"></i> <span>Blog</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","Handbook")">
+                <i class="fa fa-files-o"></i> <span>Cẩm Nang</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Index","Alert")">
+                <i class="fa fa-bell"></i> <span>Thông Báo</span>
+            </a>
+        </li>
+
+        @*<li id="subscribe">
+            <a href="@Url.Action("Index","SubscribeEmail")">
+                <i class="fa fa-inbox"></i> <span>Email Nhận Tin</span>
+            </a>
+        </li>*@
+
+        @*<li class="admin">
+            <a href="@Url.Action("ListAdmin","AspNetUser")">
+                <i class="fa fa-user-circle-o"></i> <span>Quản Trị Viên</span>
+            </a>
+        </li>*@
+
+
+
+        <li>
+            <a href="@Url.Action("Details","InfoWeb",new {Id = 1 })">
+                <i class="fa fa-info"></i> <span>Thông Tin Chung</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/" target="_blank">
+                <i class="fa fa-globe"></i> <span>Xem Website</span>
+            </a>
+        </li>
+
+        <li class="header">QUẢN LÝ CÁ NHÂN</li>
+        <li>
+            <a href="@Url.Action("ProfileUser","AspNetUser")">
+                <i class="fa fa-user"></i> <span>Hồ Sơ Cá Nhân</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+        </li>
+    </ul>
+</section>

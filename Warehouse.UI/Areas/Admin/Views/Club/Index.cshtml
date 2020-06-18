@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DATA TABLES -->
+    <link href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+}
+
+@section scripts{
+    <script src="~/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#example1").dataTable();
+            $('#example2').dataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bSort": true,
+                "bInfo": true,
+                "bAutoWidth": false
+            });
+            $('#reservation').daterangepicker();
+        });
+    </script>
+}
+
+<section class="content" ng-init="InitForAdmin('ranktable')">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="countryId">Chọn Quốc Gia</label>
+                            <select class="form-control"
+                                    ng-model="countryId"
+                                    ng-options="item as item.country_name for item in listCountries track by item.country_id"
+                                    ng-change="getLeagueAdmin('ranktable')"></select>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="countryId">Chọn Giải Đấu</label>
+                            <select class="form-control"
+                                    id="leagueId"
+                                    name="leagueId"
+                                    ng-model="leagueId"
+                                    ng-options="item as item.league_name for item in listLeague track by item.league_id"
+                                    ng-change="getRankTable()"></select>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Danh Sách Câu Lạc Bộ</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th class="text-center">Logo</th>
+                            <th class="text-center">Tên CLB</th>
+                            <th class="text-center">Mã CLB</th>
+                        </tr>
+                        <tr ng-repeat="item in RankTable">
+                            <td class="text-center"><img src={{item.team_badge}} height="80" /></td>
+                            <td class="text-center">{{item.team_name}}</td>
+                            <td class="text-center">{{item.team_id}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</section>
+

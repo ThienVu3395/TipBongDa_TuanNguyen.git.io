@@ -1,0 +1,59 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Handbook>
+@{
+    ViewBag.Title = "Cẩm Nang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bdcmb-bg4 page-head parallax overlay">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h3>@ViewBag.Title</h3>
+                </div>
+            </div>
+            <!-- /.colour-service-1-->
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li>।</li>
+                    <li>@ViewBag.Title</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</div>
+
+<div class="news-area pad60">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-9">
+                @foreach (Handbook item in Model)
+                {
+                    <div class="sports-news mb60">
+                        <div class="sports-img zoom mb40">
+                            <img src="~/Photos/Handbooks/@item.Image" alt="@item.Title">
+                        </div>
+                        <div class="sports-title mb20">
+                            <h3>@item.Title</h3>
+                            <p>Đăng bởi <span>@item.Author</span> / @(Warehouse.Common.Format.FormatDateTime(item.DateCreated)) </p>
+                        </div>
+                        <p>@item.ShortDescription</p>
+                        <div class="news-btn mt40">
+                            <a href="@Url.Action("Detail",new { alias = item.Alias })">Xem bài viết</a>
+                        </div>
+                    </div>
+                }
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+            </div>
+            <div class="col-md-12 col-lg-3">
+                @Html.Action("_HandbookSidebarPartial")
+            </div>
+        </div>
+    </div>
+</div>

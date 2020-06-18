@@ -1,0 +1,25 @@
+﻿@media screen and (min-width: 992px) {
+    .trans-news h5 {
+        overflow: hidden;
+    }
+
+        .trans-news h5 a, .trans-news h5 .comment-area .comment-box .user-cmnt .coments a i, .comment-area .comment-box .user-cmnt .coments a .trans-news h5 i {
+            /*height: 70px;*/
+            display: block;
+        }
+}
+.p10-gray-bg{
+    position:relative;
+}
+#modalThongBao .modal-body, #modalXemNoiDungThongBao .modal-body {
+    color: #000;
+}
+.table-middle tr td {
+    vertical-align: middle !important;
+}
+.btn{
+    cursor:pointer;
+}
+.modal-body p{
+    color:#000 !important;
+}

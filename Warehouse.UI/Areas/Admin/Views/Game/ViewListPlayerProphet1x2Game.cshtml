@@ -1,0 +1,220 @@
+﻿@model Dictionary<string, List<PlayProphet1x2Game>>
+
+@{
+    ViewBag.Title = "Danh Sách Thành Viên Tham Gia Vòng " + ViewBag.Round + " Nhà Tiên Tri 1x2";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Dictionary<int, Prophet1x2GameDetail> prophet1x2GameDetails = ViewBag.Prophet1x2GameDetails;
+}
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("input[data-id=checkall]").change(function () {
+                if ($(this).is(":checked")) {
+                    $(this).closest("table").find("input[type=checkbox]").prop("checked", true);
+                }
+                else {
+                    $(this).closest("table").find("input[type=checkbox]").prop("checked", false);
+                }
+            });
+
+            $('#tblData').DataTable({
+                ordering: false
+            });
+
+            $(document).on("submit", "form[name=frm]", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "Post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.status == 1) {
+                            window.location.reload();
+                        }
+                        else {
+                            ShowPopUpError(result.message);
+                        }
+                    },
+                    error: function () {
+                        ShowPopUpError("Lỗi ajax!");
+                    }
+                });
+            });
+
+            $(document).on("submit", "form[name=frmDeletePlayProphet1x2GameDetailById]", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "Post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.status == 1) {
+                            $("#tblData").find("[data-id='" + result.id + "']").remove();
+                        }
+                        else {
+                            ShowPopUpError(result.message);
+                        }
+                    },
+                    error: function () {
+                        ShowPopUpError("Lỗi ajax!");
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table id="tblData" class="table" method="post">
+                            <thead>
+                                <tr>
+                                    <th>Thành Viên</th>
+                                    <th class="text-center">Số Trận Dự Đoán</th>
+                                    <th class="text-center">Xem Danh Sách Dự Đoán</th>
+                                    <th class="text-center">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @item.Key
+                                    </td>
+                                    <td class="text-center">
+                                        <b>@item.Value.Count</b>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn bg-green btn-sm"><i class="fa fa-eye"></i> Xem</button>
+                                        <div class="modal fade" id="modal-viewDetail-@item.Key">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content" id="modal-content">
+                                                    <div class="modal-header bg-green">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <h4 class="modal-title">Danh Sách Dự Đoán Vòng @ViewBag.Round Của Thành Viên @item.Key</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-condensed table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Giải Đấu</th>
+                                                                        <th>Đội Nhà</th>
+                                                                        <th>Đội Khách</th>
+                                                                        <th>Ngày Đá</th>
+                                                                        <th>Giờ Đá</th>
+                                                                        <th>Đã Dự Đoán</th>
+                                                                        <th>Ngày Dự Đoán</th>
+                                                                        <th class="text-center">Xóa</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach (var playDetail in item.Value)
+                                                                {
+                                                                    <tr data-id="@playDetail.Id">
+                                                                        <td>
+                                                                            @prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].league_name
+                                                                        </td>
+                                                                        <td>
+                                                                            @prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].match_hometeam_name
+                                                                        </td>
+                                                                        <td>
+                                                                            @prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].match_awayteam_name
+                                                                        </td>
+                                                                        <td>
+                                                                            @prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].match_date
+                                                                        </td>
+                                                                        <td>
+                                                                            @prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].match_time
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (playDetail.Answer == 0)
+                                                                            {
+                                                                                <span>2 Đội hòa</span>
+                                                                            }
+                                                                            @if (playDetail.Answer == 1)
+                                                                            {
+                                                                                <span>@prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].match_hometeam_name thắng</span>
+                                                                            }
+                                                                            @if (playDetail.Answer == 2)
+                                                                            {
+                                                                                <span>@prophet1x2GameDetails[playDetail.Prophet1x2GameDetailId].match_awayteam_name thắng</span>
+                                                                            }
+                                                                        </td>
+                                                                        <td>
+                                                                            <form method="post" name="frmDeletePlayProphet1x2GameDetailById" action="@Url.Action("DeletePlayProphet1x2GameDetailById",new { Id = playDetail.Id })">
+                                                                                @Html.AntiForgeryToken()
+                                                                                <button type="submit" class="btn btn-default btn-sm" onclick="return confirm('Xác nhận xóa dự đoán này?')"><i class="fa fa-remove"></i> Xóa</button>
+                                                                            </form>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+
+                                    </td>
+                                    <td class="text-center">
+                                        @using (Html.BeginForm("DeletePlayerProphet1x2GameByUserName", "Game",new { userName = item.Key, prophet1x2GameId = ViewBag.Prophet1x2GameId }, FormMethod.Post, null))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" onclick="return confirm('Xác nhận loại thành viên này khỏi vòng @(ViewBag.Round) ?')" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Xóa</button>
+                                        }
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>                 
+                </div>
+                <div class="box-footer">
+                    <p>
+                        <a href="@Url.Action("Prophet1x2Game")" class="btn btn-default">Trở về</a>
+                    </p>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

@@ -1,0 +1,4 @@
+ <rule name="URL1" stopProcessing="true">
+          <match url="^abc.html" ignoreCase="true" />
+          <action type="Redirect" url="Your current page path" redirectType="Permanent" />
+        </rule>

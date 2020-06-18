@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title | Trang Tài Khoản </title>
+    <meta name="robots" content="none" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/assets/favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Content/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Content/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Content/assets/favicon/apple-icon-144x144.png">
+
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/admin/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/admin/bower_components/font-awesome/css/font-awesome.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/admin/bower_components/Ionicons/css/ionicons.min.css" />
+
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet" href="/admin/plugins/timepicker/bootstrap-timepicker.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/admin/dist/css/AdminLTE.min.css" />
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/admin/dist/css/skins/_all-skins.min.css">
+    <link href="/admin/dist/css/jquery-ui.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .margin-top-10 {
+            margin-top: 10px !important;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
+        .table-border-none tr {
+            border: none;
+        }
+
+        .table-border-none td {
+            border: none !important;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .table-middle tr td {
+            vertical-align: middle !important;
+        }
+
+        .modal-body {
+            overflow: auto;
+        }
+
+        .table-info tr td:first-child {
+            text-align: right;
+        }
+
+        .table-info tr td:nth-child(2) {
+            font-weight: bold;
+        }
+
+        .table-info tr td:first-child {
+            width: 40%;
+        }
+
+        .panel-red .panel-heading {
+            background: #605ca8;
+            color: #fff;
+        }
+    </style>
+    <!-- jQuery 3 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="<?=base_url?>" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b></b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"> <b>ADMINLTE</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        @{ 
+                            Html.RenderAction("_TopInfoUserPartial", "Manage");
+                        }
+                        
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+
+            <section class="sidebar">
+                @{
+                    Html.RenderAction("_LeftSidebarInfoUserPartial", "Manage");
+                }
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="header">TRANG TÀI KHOẢN</li>
+                    <li>
+                        <a href="@Url.Action("Index","Manage")" title="Thống kê khái quát về tài khoản của bạn"><i class="fa fa-dashboard"></i> Thông Tin Cá Nhân</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("MyGoldenGoldGame", "Manage")">
+                            <i class="fa fa-soccer-ball-o text-warning"></i> Bàn Thắng Vàng <span data-toggle="tooltip" title="Theo dõi các trận ở giải bàn thắng vàng bạn đang tham gia" class="label label-primary pull-right"></span>&nbsp;
+                        </a>                    
+                    <li>
+                        <a href="@Url.Action("ChangePassword","Manage")" title="Đổi mật khẩu đăng nhập"><i class="fa fa-key"></i> Đổi Mật Khẩu</a>
+                    </li>
+                     
+                    <li>
+                        <a href="/" target="_blank">
+                            <i class="fa fa-home"></i> <span>Về trang chủ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <form id="logoutForm" class="navbar-right" action="<?= base_url ?>account/logoff" method="post"></form>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+                    </li>
+                </ul>
+                }
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    @ViewBag.Title
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index","Manage")"><i class="fa fa-dashboard"></i> Quản lý tài khoản</a></li>
+                    <li class="active">@ViewBag.Title</li>
+                </ol>
+            </section>
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+        <div class="modal fade" id="modal-message">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Thông báo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0
+            </div>
+            <strong>Copyright &copy; 2020 <a href="https://adminlte.io">AdminLTE</a>.</strong>
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Create the tabs -->
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- AdminLTE App -->
+    <script src="/admin/dist/js/adminlte.min.js"></script>
+    <script>
+        $(document).on("show.bs.modal", ".modal-ajax", function (e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-content").html("");
+            $(this).find(".modal-content").load(link.attr("href"));
+        });
+    </script>
+    @RenderSection("Scripts", false)
+
+</body>
+</html>

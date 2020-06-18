@@ -1,0 +1,113 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Article>
+@{
+    ViewBag.Title = ((ArticleCategory)ViewBag.Category).Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bdcmb-bg4 page-head parallax overlay">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h3>@ViewBag.Title</h3>
+                </div>
+            </div>
+            <!-- /.colour-service-1-->
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                    <li>।</li>
+                    <li>Tin thế thao</li>
+                    <li>।</li>
+                    <li class="active">@ViewBag.Title</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.page-header -->
+<!-- page title & breadcrumbs end -->
+
+<div class="news-area pad60">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-9">
+                @foreach (Article article in Model)
+                {
+                    <div class="sports-news mb60">
+                        <div class="sports-img zoom mb40">
+                            <a href="@Url.Action("Details",new { alias = article.Alias })">
+                                <img src="~/Photos/Articles/@article.Image" alt="@article.Title" class="w-100">
+                            </a>
+                        </div>
+                        <div class="sports-title mb20">
+                            <h3>@article.Title</h3>
+                            <p>Tác giả <span>@article.UserCreated</span> / @article.DateCreated / Danh mục: <span>@article.ArticleCategory.Name</span></p>
+                        </div>
+                        <p>@article.Description</p>
+                        <div class="news-btn mt40">
+                            <a href="@Url.Action("Details",new { alias = article.Alias })">Xem thêm</a>
+                        </div>
+                    </div>
+                }
+                @*<nav aria-label="Page navigation mt60">
+                        <ul class="pagination justify-content-left">
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        </ul>
+                    </nav>*@
+                @Html.PagedListPager(Model, page => Url.Action("Index",new { alias = Request.QueryString["alias"], page = page }),
+                    new PagedListRenderOptions()
+                    {
+                        Display = PagedListDisplayMode.Always,
+                        UlElementClasses = new string[] { "pagination", "justify-content-left" },
+                        LiElementClasses = new string[] { "page-item" }
+                    })
+            </div>
+            <div class="col-md-12 col-lg-3">
+                @*<div class="news-box mb50 xs-mt-50">
+                        <div class="news-search">
+                            <form action="#">
+                                <input type="text" placeholder="search">
+                                <a href="#"><i class="fa fa-search"></i></a>
+                            </form>
+                        </div>
+                    </div>*@
+                <div class="recent-news">
+                    <div class="section-title news-title">
+                        <h4> <span>Tin Nổi Bật</span></h4>
+                    </div>
+
+                    @foreach (Article item in ViewBag.hotArticles)
+                    {
+                        <div class="comment-box mt30">
+                            <img src="~/Photos/Articles/@item.Image" alt="sport img">
+                            <div class="user-cmnt">
+                                <a href="@Url.Action("Details",new { alias = item.Alias })"> <span>@item.Title</span></a>
+                                <p>Danh mục: @item.ArticleCategory.Name</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @*<div class="twit-area twit-post mt50">
+                    <div class="section-title news-title">
+                        <h4> <span>twitter post</span></h4>
+                    </div>
+                    <div class="twit-box">
+                        <i class="fa fa-twitter"></i>
+                        <div class="twitted">
+                            <p><a href="#">orchesTemplate</a> Lorem ipsum sit amet, consectetur adipiscing elit. Phasellus quis est sem. </p>
+                            <p class="sml">5 minutes ago</p>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+

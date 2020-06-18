@@ -1,0 +1,16 @@
+﻿<div class="header-match-area pad20 yelow d-none d-lg-block" ng-init="InitHome()">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="live-up">
+                   @* <p><strong>live score</strong> : <span>rma</span> 0:0 <span>bra</span></p>*@
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="football-match">
+                    <a href="#" id="option{{item.country_id}}" ng-repeat="item in listCountries" ng-click="getLeagueHome(item.country_id)">{{item.country_name}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

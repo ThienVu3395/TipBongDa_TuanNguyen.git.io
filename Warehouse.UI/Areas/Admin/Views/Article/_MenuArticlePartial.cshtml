@@ -1,0 +1,22 @@
+﻿@model List<ArticleCategory>
+<li class="treeview">
+    <a href="#">
+        <i class="fa fa-files-o"></i>
+        <span>Tin Tức</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        @foreach (var item in Model)
+        {
+            <li>
+                <a href="@Url.Action("Index", "Article", new { articleCategoryId = item.Id })">
+                    <i class="fa fa-file text-danger"></i> @item.Name <span data-toggle="tooltip" title="@item.Articles.Count bài viết" class="label label-primary pull-right">@item.Articles.Count</span>&nbsp;
+                </a>
+            </li>
+        }
+
+    </ul>
+</li>
+

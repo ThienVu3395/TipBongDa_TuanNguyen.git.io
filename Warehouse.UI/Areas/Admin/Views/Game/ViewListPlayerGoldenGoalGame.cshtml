@@ -1,0 +1,223 @@
+﻿@model List<PlayGoldenGoalGame>
+
+@{
+    GoldenGoalGame goldenGoalGame = ViewBag.GoldenGoalGame;
+    List<PlayGoldenGoalGame> playersWinner = ViewBag.PlayersWinner;
+    ViewBag.Title = "Người Chơi Tham Gia Dự Đoán Bàn Thắng Vàng Vòng " + goldenGoalGame.Round;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("input[data-id=checkall]").change(function () {
+                if ($(this).is(":checked")) {
+                    $(this).closest("table").find("input[type=checkbox]").prop("checked", true);
+                }
+                else {
+                    $(this).closest("table").find("input[type=checkbox]").prop("checked", false);
+                }
+            });
+
+            $('.tblData').DataTable({
+                columnDefs: [{ orderable: false, targets: [0, 1] }],
+                order: [[0, 'desc']],
+                ordering: false
+            });
+
+            $(document).on("submit", "form[name=frm]", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "Post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.status == 1) {
+                            window.location.reload();
+                        }
+                        else {
+                            ShowPopUpError(result.message);
+                        }
+                    },
+                    error: function () {
+                        ShowPopUpError("Lỗi ajax!");
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_0" data-toggle="tab">Danh Sách Dự Đoán <label class="badge label-primary">@Model.Count</label></a></li>
+                            <li><a href="#tab_1" data-toggle="tab">Danh Sách Chiến Thắng <label class="badge label-primary">@playersWinner.Count</label></a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_0">
+                                @using (Html.BeginForm("DeletePlayGoldenGoalGame", "Game", FormMethod.Post, null))
+                                {
+                                    <input type="hidden" name="GoldenGoalGameID" value="@goldenGoalGame.Id" />
+                                    @Html.AntiForgeryToken()
+                                    <div class="table-responsive">
+                                        <table id="tblData" class="table table-bordered table-middle tblData" method="post">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">
+                                                        <input data-id="checkall" data-ref="check" type="checkbox" />
+                                                    </th>
+                                                    <th>Thành viên</th>
+                                                    <th>IP</th>
+                                                    <th>Cầu thủ ghi bàn đầu tiên</th>
+                                                    <th>Số phút bàn thắng đầu tiên</th>
+                                                    <th>Ngày dự đoán</th>
+                                                    <th>Lần sửa cuối cùng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" name="check" value="@item.Id" />
+                                                        </td>
+                                                        <td>
+                                                            @item.UserName
+                                                        </td>
+                                                        <td>
+                                                            @item.IP
+                                                        </td>
+                                                        <td>
+                                                            @item.player_name_result
+                                                        </td>
+                                                        <td>
+                                                            Phút @item.minute_goalscorer
+                                                        </td>
+                                                        <td>
+                                                            @Warehouse.Common.Format.FormatDateTime(item.CreatedDate)
+                                                        </td>
+                                                        <td>
+                                                            @Warehouse.Common.Format.FormatDateTime(item.LastChanged)
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <button type="submit" class="btn btn-default btn-xs" onclick="return confirm('Xác nhận xoá các dòng được chọn?')"><i class="fa fa-remove"></i> Xoá</button>
+                                                    </td>
+                                                    <td colspan="6"></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                            <div class="tab-pane" id="tab_1">
+                                <div class="table-responsive">
+                                    <table id="tblData" class="table table-bordered table-middle tblData" method="post">
+                                        <thead>
+                                            <tr>
+                                                <th class="hidden"></th>
+                                                <th>Thành viên</th>
+                                                <th>IP</th>
+                                                <th>Cầu thủ ghi bàn đầu tiên</th>
+                                                <th>Số phút bàn thắng đầu tiên</th>
+                                                <th>Ngày dự đoán</th>
+                                                <th>Lần sửa cuối cùng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in playersWinner)
+                                            {
+                                                <tr>
+                                                    <td class="hidden">@item.Id</td>
+                                                    <td>
+                                                        @item.UserName
+                                                    </td>
+                                                    <td>
+                                                        @item.IP
+                                                    </td>
+                                                    <td>
+                                                        <label class="label label-success">@item.player_name_result</label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="label label-success">Phút @item.minute_goalscorer</label>
+                                                    </td>
+                                                    <td>
+                                                        @Warehouse.Common.Format.FormatDateTime(item.CreatedDate)
+                                                    </td>
+                                                    <td>
+                                                        @Warehouse.Common.Format.FormatDateTime(item.LastChanged)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <button type="submit" class="btn btn-default btn-xs" onclick="return confirm('Xác nhận xoá các dòng được chọn?')"><i class="fa fa-remove"></i> Xoá</button>
+                                                </td>
+                                                <td colspan="6"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div> 
+                                @if (goldenGoalGame.match_status == "Đã kết thúc" && playersWinner.Count > 0)
+                                {
+                                    if (goldenGoalGame.Awarded == true)
+                                    {
+                                        <h3 class="text text-success"><i class="fa fa-check"></i> Đã Trao Thưởng</h3>
+                                    }
+                                    else
+                                    {
+                                    <div class="pad30">
+                                        <form action="@Url.Action("AwardedGoldenGoalGame", new { Id = goldenGoalGame.Id })" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" onclick="return confirm('Xác nhận đã trao thưởng trận này')" class="btn bg-green"><i class="fa fa-gift"></i> Trao Thưởng</button>
+                                        </form>
+                                    </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <p>
+                        <a href="@Url.Action("GoldenGoalGame")" class="btn btn-default">Trở về</a>
+                    </p>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

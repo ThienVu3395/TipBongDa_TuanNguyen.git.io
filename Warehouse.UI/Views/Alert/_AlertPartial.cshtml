@@ -1,0 +1,45 @@
+﻿@model List<Alert>
+<div class="modal fade" id="modalThongBao" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h4 class="modal-title">Thông Báo</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-middle">
+                    <thead>
+                        <tr>
+                            <th>Ngày đăng</th>
+                            <th>Tiêu đề</th>
+                            <th class="text-center">Xem Nội dung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (Alert item in Model)
+                    {
+                        <tr>
+                            <td>@(Warehouse.Common.Format.FormatDateTime(item.DateCreated))</td>
+                            <td>@item.Title</td>
+                            <td class="text-center">
+                                <a href="@Url.Action("GetContent",new { id  = item.Id })" data-target="#modalXemNoiDungThongBao" data-toggle="modal" class="btn btn-primary">Xem</a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalXemNoiDungThongBao" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" >
+
+        </div>
+    </div>
+</div>
+

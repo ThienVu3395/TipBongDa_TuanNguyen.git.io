@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ForumPartial.cshtml";
+    List<ForumArticle> ListArticle = ViewBag.ForumArticles;
+}
+
+<div class="modal fade" id="modalThongBao" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h4 class="modal-title">Thông Báo</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-middle">
+                    <thead>
+                        <tr>
+                            <th>Ngày đăng</th>
+                            <th>Tiêu đề</th>
+                            <th class="text-center">Xem Nội dung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Alert item in Model)
+                        {
+                            <tr>
+                                <td>@(Warehouse.Common.Format.FormatDateTime(item.DateCreated))</td>
+                                <td>@item.Title</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("GetContent",new { id  = item.Id })" data-target="#modalXemNoiDungThongBao" data-toggle="modal" class="btn btn-primary">Xem</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="tt-topic-list">
+        <div class="tt-list-header">
+            <div class="tt-col-topic">Người Đăng</div>
+            <div class="tt-col-category">Danh Mục</div>
+            <div class="tt-col-value hide-mobile">Lượt Thích</div>
+            <div class="tt-col-value hide-mobile">Bình Luận</div>
+            <div class="tt-col-value hide-mobile">Lượt Xem</div>
+            <div class="tt-col-value">Giờ Đăng</div>
+        </div>
+        <div class="tt-topic-alert tt-alert-default" role="alert">
+            <a href="#" target="_blank">QUY ĐỊNH CỦA DIỄN ĐÀN</a> click vào để xem chi tiết
+        </div>
+
+        @if (ListArticle != null)
+        {
+            foreach (var item in ListArticle)
+            {
+                <div class="tt-item">
+                    <div class="tt-col-avatar">
+                        <svg class="tt-icon">
+                            <use xlink:href="#icon-ava-c"></use>
+                        </svg>
+                    </div>
+                    <div class="tt-col-description">
+                        <h6 class="tt-title">
+                            <a href="@Url.Action("Detail","Forum",new { id = item.Id})">
+                                @item.Title
+                            </a>
+                        </h6>
+                        <div class="row align-items-center no-gutters">
+                            <div class="col-11">
+                                <ul class="tt-list-badge">
+                                    <li class="show-mobile"><a href="#"><span class="@(item.ForumCategory?.ColorCode) tt-badge">@(item.ForumCategory?.Name)</span></a></li>
+                                    <li><a href=@Url.Action("EditPost","Forum",new { id = 28 })><span class="tt-badge">Sửa</span></a></li>
+                                    <li><a href="#"><span class="tt-badge">Xóa</span></a></li>
+                                </ul>
+                            </div>
+                            <div class="col-1 ml-auto show-mobile">
+                                <div class="tt-value">@(item.DateCreated.HasValue ? item.DateCreated.Value.ToString("dd/MM/yyyy") : string.Empty)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tt-col-category"><span class="tt-@(item.ForumCategory?.ColorCode) tt-badge">@(item.ForumCategory?.Name)</span></div>
+                    <div class="tt-col-value  hide-mobile">@(item.Likes)</div>
+                    <div class="tt-col-value tt-color-select  hide-mobile">@(item.ForumComments.Count)</div>
+                    <div class="tt-col-value  hide-mobile">8.3k</div>
+                    <div class="tt-col-value hide-mobile">@(item.DateCreated.HasValue ? item.DateCreated.Value.ToString("dd/MM/yyyy") : string.Empty)</div>
+                </div>
+            }
+        }
+
+        <div class="tt-row-btn">
+            <button type="button" class="btn-icon js-topiclist-showmore">
+                <svg class="tt-icon">
+                    <use xlink:href="#icon-load_lore_icon"></use>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>

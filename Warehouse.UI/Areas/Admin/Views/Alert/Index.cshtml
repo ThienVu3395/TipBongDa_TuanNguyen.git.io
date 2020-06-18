@@ -1,0 +1,97 @@
+﻿@model List<Alert>
+@{
+
+    ViewBag.Title = "Danh Sách Thông Báo";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#tblData').DataTable({
+                ordering: false,
+                searching: false,
+                lengthChange:false
+            });
+           
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <p>
+                        <a href="@Url.Action("Create")" class="btn bg-green btn-xs" ><i class="fa fa-plus"></i> Tạo Thông Báo Mới</a>
+                    </p>
+                    <div class="table-responsive">
+                        <table id="tblData" class="table table-bordered table-middle" method="post">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-3">Tiêu đề</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Tác giả</th>
+                                    <th>Ngày hết hạn</th>
+                                    <th class="col-sm-2 text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Alert item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @item.Title
+                                    </td>
+                                    <td>
+                                        @Warehouse.Common.Format.FormatDateTime(item.DateCreated)
+                                    </td>
+                                    <td>
+                                       @item.Author
+                                    </td>
+                                    <td>
+                                        @if (item.ExpirationDate != null)
+                                        {
+                                            <span>@item.ExpirationDate.Value.ToString("dd/MM/yyyy")</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("Details", new { Id = item.Id })"><i class="fa fa-eye"></i> Xem</a>
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("Edit", new { Id = item.Id })"><i class="fa fa-edit"></i> Sửa</a>
+
+                                        <form class="hidden" id="frmDelete_@item.Id" action="@Url.Action("Delete",new { Id = item.Id })" method="post">
+                                            @Html.AntiForgeryToken()
+                                        </form>
+                                        <button class="btn bg-red btn-xs" onclick="if(confirm('Xác nhận xóa thông báo này?')) { document.getElementById('frmDelete_@item.Id').submit();  }"><i class="fa fa-remove"></i> Xóa</button>
+                                    </td>
+
+                                </tr>
+                                }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

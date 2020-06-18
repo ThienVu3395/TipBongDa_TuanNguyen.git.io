@@ -1,0 +1,22 @@
+﻿<div class="news-box mb50 xs-mt-50">
+    <div class="news-search">
+        <form action="@Url.Action("Search")" method="post">
+            <input type="text" placeholder="Tìm bài viết ..." name="keyword" >
+            <a href="javascript:void(0)"><i class="fa fa-search"></i></a>
+        </form>
+    </div>
+</div>
+<div class="recent-news mt20">
+    <div class="blog-title">
+        <h3>Tin Nổi Bật</h3>
+    </div>
+    @foreach (Handbook item in ViewBag.ArticlesHightLight)
+    {
+    <div class="comment-box mt30">
+        <img src="~/Photos/Handbooks/@item.Image" alt="@item.Title" />
+        <div class="user-cmnt">
+            <a href="@Url.Action("Detail",new { alias = item.Alias })"> <span>@item.Title</span></a>
+        </div>
+    </div>
+    }
+</div>

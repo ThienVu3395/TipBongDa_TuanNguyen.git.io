@@ -1,0 +1,222 @@
+﻿@model GoldenGoalGame
+@{
+    ViewBag.Title = "Bàn Thắng Vàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    InfoWeb infoWeb = ViewBag.InfoWeb;
+}
+
+@section Styles{
+    <link href="~/Content/assets/css/chloe.css" rel="stylesheet" type="text/css" />
+    <link href="https://www.tipsportal.com/public/css/select2.min.css?v=1" rel="stylesheet" type="text/css" />
+    <style>
+        .relative {
+            position: relative;
+        }
+
+        .size1050px {
+            width: 1050px;
+            /*background: #e6e6e6;*/
+            margin: 0 auto;
+        }
+
+        .p10banner {
+            height: 250px;
+            position: relative;
+            transition: .3s;
+        }
+
+        .p10bannerimg {
+            width: 100%;
+            height: 100%;
+            object-position: center center;
+            object-fit: cover;
+        }
+
+        .p10bannerbtns {
+            position: absolute;
+            bottom: 6px;
+            left: 10px;
+        }
+
+        .ggbannerbtns {
+            /*position: absolute;
+                bottom: 15px;
+                left: 210px;*/
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .p10bannerbtns div,
+        .ggbannerbtns div {
+            height: 50px;
+            padding: 12px 50px;
+            color: #fff;
+            background: #212121;
+            border: none;
+            float: left;
+            margin: 0 10px;
+            transform: skew(-14deg);
+            border-radius: 5px;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: .1s;
+            font-size: 17px;
+            display: grid;
+            display: -ms-grid;
+        }
+
+            .p10bannerbtns div:hover,
+            .p10bannerbtns .active,
+            .ggbannerbtns div:hover,
+            .ggbannerbtns .active {
+                background: #f96b24;
+            }
+        /*07/03/2019*/
+        .p10bannerbtns span,
+        .ggbannerbtns span {
+            transform: skew(14deg);
+            display: block;
+        }
+        /*stats row*/
+        .p10-table .row .cell:nth-of-type(8) {
+            display: none;
+        }
+        /*result row*/
+        /*.p10-table .row .cell:nth-of-type(9){
+            display: none;
+        }*/
+        .p10bannerimg.mob {
+            display: none;
+        }
+
+        .roundBanThangVang {
+            display: inline-block;
+            position: absolute;
+            left: 50px;
+            top: 10px;
+        }
+    </style>
+}
+
+@section Scripts{
+<script>
+    function ftppgold(id) {
+        $("#resultTab").html($("#" + id).html());
+    }
+
+    $(document).on("click","[name='tabBanThangVang']",function (e) {
+        e.preventDefault();
+        ftppgold($(this).attr("data-tabid"));
+        $("[name=tabBanThangVang]").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $(document).on("change","[name='PlayersHomeTeam']", function (e) {
+        e.preventDefault();
+        if ($(this).val() != "0") {
+            $("[name='PlayersAwayTeam']").val("0");
+        }
+    });
+
+    $(document).on("change","[name='PlayersAwayTeam']", function (e) {
+        e.preventDefault();
+        if ($(this).val() != "0") {
+            $("[name='PlayersHomeTeam']").val("0");
+        }
+    });
+
+    $(document).on("submit","#frmDuDoan", function (e) {
+        e.preventDefault();
+        var self = $(this);
+        swal({
+            title: "Xác nhận dự đoán",
+            text: "Bạn xác nhận tham gia dự đoán trận này và bị trừ 50 điểm?",
+            icon: "info",
+            buttons: true,
+            dangerMode: false,
+        }).then((confirm) => {
+                if (confirm) {
+                    $.post({
+                        url: $(self).attr("action"),
+                        method: $(self).attr("method"),
+                        data: $(self).serialize(),
+                        success: function (result) {
+                            if (result.status == "0") {
+                                swal("Dự đoán thất bại", result.message, "error");
+                            } else {
+                                swal("Dự đoán thành công", result.message, "success");
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 3000);
+                            }
+                        },
+                        error: function () {
+                            swal("Lỗi", "Xảy ra lỗi khi thực thi", "error");
+                        }
+                    });
+                } else {
+                    //swal("Your imaginary file is safe!");
+                }
+            });
+    });
+    $(document).on("change","#cbRound", function (e) {
+        e.preventDefault();
+        $.post("@Url.Action("ChangeRoundGoldedGoalGame")", { Round: $(this).val() }, function (result) {
+            $("#resultAjax").html(result);
+            $("[name='tabBanThangVang']").first().click().bind();
+        });
+    });
+    $("[name='tabBanThangVang']").first().click().bind();
+</script>
+
+}
+
+<!-- page title & breadcrumbs start -->
+<div class="bdcmb-bg4 page-head parallax overlay" style="padding: 50px">
+    <div class="container" style="padding-top: 50px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h3 id="title">@ViewBag.Title</h3>
+                </div>
+            </div>
+            <!-- /.colour-service-1-->
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="/">Trang Chủ</a></li>
+                    <li>।</li>
+                    <li>@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.page-header -->
+<!-- page title & breadcrumbs end -->
+<!--result area start-->
+<div class="banthangvang-box" style="min-height:700px">
+    <div class="col-md-12">
+        <div class="ggbannerbtns relative">
+            <div name="tabBanThangVang" data-tabid="banthangvang"><span>Dự đoán</span></div>
+            <div name="tabBanThangVang" data-tabid="thele"><span>Thể lệ</span></div>
+            <div name="tabBanThangVang" data-tabid="danhsachnguoichienthang"><span>Người chiến thắng hàng tuần</span></div>
+        </div>
+    </div>
+    <div class="container clearfix">
+        <div class="row">
+            <div class="col-md-12 divBanThangVang" id="resultTab">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--fixtures area end-->
+
+<section id="resultAjax">
+    @Html.Action("ChangeRoundGoldedGoalGame", new { Round = Model.Round })
+</section>

@@ -1,0 +1,120 @@
+﻿@model List<GoldenGoalGame>
+@{
+    ViewBag.Title = "Giải Bàn Thắng Vàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $(document).on("show.bs.modal", "#modal-editGoldenGoldGame", function (e) {
+                var link = $(e.relatedTarget);
+                $(this).find(".modal-content").html("");
+                $(this).find(".modal-content").load(link.attr("href"));
+            });
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <table id="tblData" class="table table-bordered" ng-init="getLeague(@ViewBag.CountryId)">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Vòng Đấu</th>
+                                <th>
+                                    Giải Đấu
+                                </th>
+                                <th>Đội Chủ Nhà</th>
+                                <th>Đội Khách</th>
+                                <th>Ngày Đá</th>
+                                <th>Thời Gian Đá</th>
+                                <th>Trạng Thái Trận Đấu</th>
+                                <th class="text-center">Kết Quả</th>
+                                <th>Cầu Thủ Ghi Bàn Đầu Tiên</th>
+                                <th class="text-center">Số Phút Ghi Bàn</th>
+                                <th class="col-sm-3 text-center">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (GoldenGoalGame item in Model)
+                            {
+                            <tr>
+                                <td class="text-center">
+                                    Vòng @item.Round
+                                </td>
+                                <td class="text-center">
+                                    @item.league_name
+                                </td>
+                                <td>
+                                    @item.match_hometeam_name
+                                </td>
+                                <td>
+                                    @item.match_awayteam_name
+                                </td>
+                                <td>
+                                    @item.match_date
+                                </td>
+                                <td>
+                                    @item.match_time
+                                </td>
+                                <td>
+                                    @item.match_status
+                                </td>
+                                <td class="text-center">
+                                    @item.match_hometeam_score - @item.match_awayteam_score
+                                </td>
+                                <td>
+                                    @item.player_name_result
+                                </td>
+                                <td class="text-center">
+                                    Phút @item.minute_goalscorer
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("_EditGoldenGoalGameModal",new { Id = item.Id })" class="btn bg-blue btn-sm" data-toggle="modal" data-target="#modal-editGoldenGoldGame"><i class="fa fa-edit"></i> Sửa</a>
+                                    <a href="@Url.Action("ViewListPlayerGoldenGoalGame",new { Id = item.Id })" class="btn bg-green btn-sm"><i class="fa fa-user"></i> Thành Viên Tham Gia</a>
+                                </td>
+                            </tr>
+                            }
+                    </table>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<div class="modal fade" id="modal-editGoldenGoldGame">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-content">
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,121 @@
+﻿@model List<Article>
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#tblData').DataTable({
+                searching: true,
+                lengthChange: true,
+                ordering: false
+            });
+           
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div>
+                        <p>                 
+                            <a href="@Url.Action("Create",new { articleCategoryId = Request.QueryString["articleCategoryId"] })" class="btn bg-green btn-xs">Thêm Bài Viết</a>
+                        </p>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="tblData" class="table table-bordered table-middle" method="post">
+                            <thead>
+                                <tr>
+                                    <td class="hidden">
+                                        Id
+                                    </td>
+                                    @if (int.Parse(Request.QueryString["articleCategoryId"].ToString()) != 4)
+                                    {
+                                    <td class="text-center">Hình ảnh</td>
+                                    }
+                                    <th class="col-sm-3">Tiêu đề</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Tác giả</th>
+                                    <th class="text-center">Hiển thị</th>
+                                    <th class="col-xs-2 text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Article item in Model)
+                                {
+                                <tr>
+                                    <td class="hidden">
+                                        @item.Id
+                                    </td>
+                                    @if (int.Parse(Request.QueryString["articleCategoryId"].ToString()) != 4)
+                                    {
+                                    <td class="text-center">
+                                        <img src="~/Photos/Articles/@item.Image" width="100" height="auto" alt="@item.Title" />
+                                    </td>
+                                    }
+                                    <td>
+                                        <b><a href="@Url.Action("Details","Article",new { @item.Id })" target="_blank">@item.Title</a></b>
+                                    </td>
+                                    <td>
+                                        @if (item.DateCreated.HasValue)
+                                        {
+                                            @Warehouse.Common.Format.FormatDateTime(item.DateCreated.Value)
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.UserCreated
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.Display != null && item.Display == true)
+                                        {
+                                            <label class="label label-success">Hiển thị</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="label label-danger">Ẩn</label>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("Details", new { Id = item.Id })"><i class="fa fa-eye"></i> Xem</a>
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("Edit", new { Id = item.Id })"><i class="fa fa-edit"></i> Sửa</a>
+                                        <form class="hidden" id="frmDelete_@item.Id" action="@Url.Action("Delete",new { Id = item.Id, ArticleCategoryId = item.ArticleCategoryId })" method="post">
+                                        </form>
+                                        <button class="btn bg-red btn-xs" onclick="if(confirm('Xác nhận xóa bài viết này?')) { document.getElementById('frmDelete_@item.Id').submit();  }"><i class="fa fa-remove"></i> Xóa</button>
+                                    </td>
+
+                                </tr>
+                                }
+                        </table>
+                    </div>
+                </div>
+                <!-- /.box-body -->       
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

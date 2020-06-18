@@ -1,0 +1,16 @@
+1. Bỏ chức năng nhận tin tức qua email (DONE)
+2. Breadcum đặt bên trái, tiêu đề trang cho xuống dưới (bỏ phần breadcum ở giữa banner) (DONE)
+3. 
+-> Routing Danh mục: 
+3.1 domain/thoi-trang-nam/danh-muc-cap1 (domain/thoi-trang-nam/quan-nam) 
+3.2 domain/thoi-trang-nam/danh-muc-cap2 (domain/thoi-trang-nam/quan-thun-nam) 
+3.3 domain/thoi-trang-nam/ten-san-pham.html
+
+3.4 domain/blog
+3.5 domain/ten-bai-viet
+
+3.5 domain/gio-hang
+
+3.6 domain/huong-dan-mua-hang-truc-tuyen
+
+4. Đếm sản phẩm theo danh mục cấp 1,2 ở bộ lọc

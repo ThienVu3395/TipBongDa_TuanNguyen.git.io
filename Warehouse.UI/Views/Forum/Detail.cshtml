@@ -1,0 +1,322 @@
+﻿@model InfoWeb
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_ForumPartial.cshtml";
+    ForumArticle forumArticle = ViewBag.Article;
+    List<ForumComment> forumComments = ViewBag.ListComment;
+}
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script>
+        function changeStatusCmt(status, id) {
+            let t = document.getElementById("cmtType");
+            let ct = document.getElementById("ctForm");
+            t.value = status;
+            if (id !== 0) {
+                let pr = document.getElementById("cmtID");
+                pr.value = id;
+                ct.setAttribute("placeholder", "Bạn nghĩ sao về bình luận này ?");
+            }
+            else ct.setAttribute("placeholder", "Bạn nghĩ sao về bài viết này ?");
+        }
+    </script>
+}
+
+<div class="container">
+    <div class="tt-single-topic-list">
+        <div class="tt-item">
+            <div class="tt-single-topic">
+                <div class="tt-item-header">
+                    <div class="tt-item-info info-top">
+                        <div class="tt-avatar-icon">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-ava-d"></use></svg></i>
+                        </div>
+                        <div class="tt-avatar-title">
+                            <a href="#">@forumArticle.UserCreated</a>
+                        </div>
+                        <a href="#" class="tt-info-time">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>@forumArticle.DateCreated
+                        </a>
+                    </div>
+                    <h3 class="tt-item-title">
+                        <a href="#">@forumArticle.Title</a>
+                    </h3>
+                    @*<div class="tt-item-tag">
+                            <ul class="tt-list-badge">
+                                <li><a href="#"><span class="tt-color03 tt-badge">exchange</span></a></li>
+                                <li><a href="#"><span class="tt-badge">themeforest</span></a></li>
+                                <li><a href="#"><span class="tt-badge">elements</span></a></li>
+                            </ul>
+                        </div>*@
+                </div>
+                <div class="tt-item-description">
+                    <h6 class="tt-title">@forumArticle.Description</h6>
+                    <p>
+                        @forumArticle.Content
+                    </p>
+                </div>
+                <div class="tt-item-info info-bottom">
+                    <a href="#" class="tt-icon-btn">
+                        <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                        <span class="tt-text">@forumArticle.Likes</span>
+                    </a>
+                    <a href="#" class="tt-icon-btn">
+                        <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                        <span class="tt-text">@forumArticle.Dislikes</span>
+                    </a>
+
+                    <a href="#" class="tt-icon-btn">
+                        <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
+                        <span class="tt-text">@forumComments.Count</span>
+                    </a>
+
+                    @*<a href="#" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-view"></use></svg></i>
+                            <span class="tt-text">10.5k</span>
+                        </a>*@
+
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+                        <div class="col-separator"></div>
+
+                        <a href="@Url.Action("Like","Forum",new { id = forumArticle.Id })" class="tt-icon-btn tt-small-indent" data-toggle="tooltip" title="Like this post" style="color:blue!important">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                        </a>
+                        <a href="@Url.Action("Unlike","Forum",new { id = forumArticle.Id })" class="tt-icon-btn tt-small-indent" data-toggle="tooltip" title="Dislike this post">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                        </a>
+
+                        <a href="#cmtContent" class="tt-icon-btn tt-small-indent" data-toggle="tooltip" title="Reply this post" onclick="changeStatusCmt('true',0)">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (forumComments.Count > 0)
+        {
+            foreach (var item in forumComments)
+            {
+                if (item.ForumCommentParentID == null)
+                {
+                    <div class="tt-item">
+                        <div class="tt-single-topic">
+                            <div class="tt-item-header pt-noborder">
+                                <div class="tt-item-info info-top">
+                                    <div class="tt-avatar-icon">
+                                        <i class="tt-icon"><svg><use xlink:href="#icon-ava-t"></use></svg></i>
+                                    </div>
+                                    <div class="tt-avatar-title">
+                                        <a href="#">@item.UserComment</a>
+                                    </div>
+                                    <a href="#" class="tt-info-time">
+                                        <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>@item.DateComment
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="tt-item-description">
+                                @item.Content
+                                @foreach (var subComment in item.ForumChildComments)
+                                {
+                                    <div class="topic-inner-list">
+                                        <div class="topic-inner">
+                                            <div class="topic-inner-title">
+                                                <div class="topic-inner-avatar">
+                                                    <i class="tt-icon"><svg><use xlink:href="#icon-ava-s"></use></svg></i>
+                                                </div>
+                                                <div class="topic-inner-title"><a href="#">@subComment.UserComment ( @subComment.DateComment )</a></div>
+                                            </div>
+                                            <div class="topic-inner-description">
+                                                @Html.Raw(subComment.Content)
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="tt-item-info info-bottom">
+                                @*<a href="#" class="tt-icon-btn">
+                                        <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                                        <span class="tt-text">671</span>
+                                    </a>
+                                    <a href="#" class="tt-icon-btn">
+                                        <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                                        <span class="tt-text">39</span>
+                                    </a>
+                                    <a href="#" class="tt-icon-btn">
+                                        <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
+                                        <span class="tt-text">283</span>
+                                    </a>*@
+                                @if (User.Identity.IsAuthenticated == true)
+                                {
+                                    <div class="col-separator"></div>
+
+                                    <a href="#cmtContent" class="tt-icon-btn tt-hover-02 tt-small-indent" data-toggle="tooltip" title="Reply this comment" onclick="changeStatusCmt('false',@(item.Id))">
+                                        <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <div class="tt-wrapper-inner">
+        <h4 class="tt-title-separator">
+            <span>
+                @if (forumComments.Count > 0)
+                {
+                    @("Để Lại Cảm Nghĩ Của Bạn Về Bài Viết Này");
+                }
+                else
+                {
+                    @("Hãy Trở Thành Người Đầu Tiên Bình Luận Bài Viết Này");
+                }
+            </span>
+        </h4>
+    </div>
+
+    @if (User.Identity.IsAuthenticated == false)
+    {
+        <div class="tt-topic-list">
+            <div class="tt-item tt-item-popup">
+                <div class="tt-col-avatar">
+                    <svg class="tt-icon">
+                        <use xlink:href="#icon-notification-f"></use>
+                    </svg>
+                </div>
+
+                <div class="tt-col-message">
+                    Hãy Đăng Nhập Để Cùng Tham Gia Bình Luận Bài Viết Này
+                </div>
+                <div class="tt-col-btn">
+                    <a href=@Url.Action("Login", "Account", new { returnUrl = Request.Url.ToString() }) class="btn btn-primary">Đăng Nhập</a>
+                    <a href=@Url.Action("Register", "Account") class="btn btn-secondary">Đăng Ký</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    else
+    {
+        <form class="tt-wrapper-inner" id="cmtContent" name="commentForm" method="post" action="@Url.Action("CreateComment","Forum")">
+            <div class="pt-editor form-default">
+                <input type="hidden" name="ForumArticleID" value="@(forumArticle.Id)" />
+                <input type="hidden" name="UserComment" value="@(User.Identity.Name)" />
+                <input type="hidden" name="commentType" id="cmtType" value="true" />
+                <input type="hidden" name="ForumCommentParentID" id="cmtID" value="" />
+                @*<h6 class="pt-title">Bạn Nghĩ Sao Về Bài Viết Này ?</h6>*@
+                @*<div class="pt-row">
+                        <div class="col-left">
+                            <ul class="pt-edit-btn">
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-quote"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-bold"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-italic"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-share_topic"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-blockquote"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-performatted"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li class="hr"></li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-upload_files"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-bullet_list"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-heading"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-horizontal_line"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-emoticon"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-settings"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn-icon">
+                                        <svg class="tt-icon">
+                                            <use xlink:href="#icon-color_picker"></use>
+                                        </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>*@
+                <div class="form-group">
+                    <textarea name="Content" id="ctForm" class="form-control" rows="5" placeholder="Bạn nghĩ sao về bài viết này ?" required></textarea>
+                </div>
+                <div class="pt-row">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-secondary btn-width-lg">Gửi Bình Luận</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+

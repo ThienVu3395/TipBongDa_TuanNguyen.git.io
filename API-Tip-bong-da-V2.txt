@@ -1,0 +1,8 @@
+1. https://www.tipsportal.com/HomeCont/getStandings => Lấy bảng xếp hạng các CLB của giải đấu bất kỳ
+Tham số: leage_id
+2. https://www.tipsportal.com/HomeCont/getLeague_f => Lấy danh sách giải đấu
+Tham số: không có
+3. https://www.tipsportal.com/HomeCont/getFixtures => Lấy lịch thi đấu ngày hôm nay theo giải đấu bất kỳ
+Tham số: league_id, timezone = -7, league_name
+4. https://www.tipsportal.com/HomeCont/getLivestream => Lấy danh sách lịch thi đấu theo ngày
+Tham số: time_zone = -7, datefilter: 2020-02-10

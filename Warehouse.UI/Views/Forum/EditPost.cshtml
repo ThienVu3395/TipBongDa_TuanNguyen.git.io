@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Chỉnh Sửa Thông Tin Bài Viết";
+    Layout = "~/Views/Shared/_ForumPartial.cshtml";
+}
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+}
+
+<div class="container">
+    <div class="tt-wrapper-inner">
+        <h1 class="tt-title-border">
+            Cập Nhật Thông Tin Bài Viết
+        </h1>
+        <form class="form-default form-create-topic">
+            <div class="form-group">
+                <label for="inputTopicTitle">Tiêu Đề</label>
+                <div class="tt-value-wrapper">
+                    <input type="text" name="name" class="form-control" id="inputTopicTitle" placeholder="Nhập nội dung bài viết">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="inputTopicTitle">Danh Mục</label>
+                    <select class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="Value 01">Value 01</option>
+                        <option value="Value 02">Value 02</option>
+                    </select>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="inputTopicTags">Tags</label>
+                        <input type="text" name="name" class="form-control" id="inputTopicTags" placeholder="Use comma to separate tags">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-editor">
+                <h6 class="pt-title">Nội Dung</h6>
+                <textarea name="editor1"></textarea>
+                <script>
+                    CKEDITOR.replace('editor1');
+                </script>
+            </div>
+
+            <div class="form-group" style="margin-top:16px">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="settingsCheckBox01" name="checkbox">
+                    <label for="settingsCheckBox01">
+                        <span class="check"></span>
+                        <span class="box"></span>
+                        <span class="tt-text">Tin Nổi Bật</span>
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="settingsCheckBox02" name="checkbox">
+                    <label for="settingsCheckBox02">
+                        <span class="check"></span>
+                        <span class="box"></span>
+                        <span class="tt-text">Duyệt Bài Viết Ngay Sau Khi Đăng Bài</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-auto ml-md-auto">
+                    <a href="#" class="btn btn-secondary btn-width-lg">Cập Nhật Thông Tin</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

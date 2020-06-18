@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Bảng Điều Khiển";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <ul>
+                        <li>Bạn có thể chọn trận đấu cho 2 giải Bàn Thắng Vàng hoặc Nhà Tiên Tri bằng cách vào trang <a href="@Url.Action("Index","Calendar")">Lịch Thi Đấu</a></li>
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

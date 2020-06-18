@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Danh Sách Cầu Thủ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content" ng-init="InitForAdmin('goldengold')">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="countryId">Quốc Gia</label>
+                            <select class="form-control"
+                                    id="countryId"
+                                    name="countryId"
+                                    ng-model="countryId"
+                                    ng-options="item as item.country_name for item in listCountries track by item.country_id"
+                                    ng-change="getLeagueAdmin('goldengold')"></select>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="countryId">Giải Đấu</label>
+                            <select class="form-control"
+                                    id="leagueId"
+                                    name="leagueId"
+                                    ng-model="leagueId"
+                                    ng-options="item as item.league_name for item in listLeague track by item.league_id"
+                                    ng-change="getTeam()">
+                            </select>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="countryId">Câu Lạc Bộ</label>
+                            <select class="form-control"
+                                    id="teamId"
+                                    name="teamId"
+                                    ng-model="teamId"
+                                    ng-options="item as item.team_name for item in ListTeam track by item.team_key"
+                                    ng-change="getPlayers()">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">@ViewBag.Title</h3>
+                    <div class="box-tools">
+                        <div class="input-group">
+                            <input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search" />
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th class="text-center">Số Áo</th>
+                            <th>Tên</th>
+                            <th>Năm Sinh</th>
+                            <th>Vị Trí</th>
+                            <th>Quốc Tịch</th>
+                        </tr>
+                        <tr ng-repeat="j in ListPlayer">
+                            <td class="text-center"><span class="label label-warning">{{j.player_number}}</span></td>
+                            <td>{{j.player_name}}</td>
+                            <td>11-7-2014</td>
+                            <td>{{j.player_type}}</td>
+                            <td>{{j.player_country}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div><!-- /.row -->
+</section>
+
+

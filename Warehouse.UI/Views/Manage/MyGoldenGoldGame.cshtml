@@ -1,0 +1,132 @@
+﻿@model List<PlayGoldenGoalGame>
+@{
+    ViewBag.Title = "Giải Bàn Thắng Vàng Đã Tham Gia";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+    Dictionary<int, bool> listCheckCanEditPlayGoldenGoalGame = ViewBag.ListCheckCanEditPlayGoldenGoalGame;
+}
+@section Scripts{
+    <script>
+        $(document).on("submit", "#frmEditMyGoldenGoldGameModal", function (e) {
+            e.preventDefault();
+            var self = $(this);
+            $.post({
+                url: $(self).attr("action"),
+                method: $(self).attr("method"),
+                data: $(self).serialize(),
+                success: function (result) {
+                    if (result.status == "0") {
+                        swal("Lỗi", result.message, "error");
+                    } else {
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    swal("Lỗi", "Xảy ra lỗi khi thực thi", "error");
+                }
+            });
+        });
+    </script>
+}
+<section class="content">
+        <!-- /.row -->
+        <div class="row">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h3 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-tooltip="true" title="" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" data-original-title="Click vào đây để hiển thị" class="collapsed">
+                                @ViewBag.Title
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="true">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Vòng đấu</th>
+                                            <th>Đội chủ nhà</th>
+                                            <th>Đội khách</th>
+                                            <th>Thời gian diễn ra</th>
+                                            <th>Dự đoán của tôi</th>
+                                            <th>Kết quả trận</th>
+                                            <th class="text-center">Kết quả dự đoán</th>
+                                            <th>Ngày dự đoán</th>
+                                            <th class="text-center">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="text-center">Vòng @item.GoldenGoalGame.Round</td>
+                                                <td>@item.GoldenGoalGame.match_hometeam_name</td>
+                                                <td>@item.GoldenGoalGame.match_awayteam_name</td>
+                                                <td>@item.GoldenGoalGame.match_time, @item.GoldenGoalGame.match_date</td>
+                                                <td>@item.player_name_result (phút @(item.minute_goalscorer)')</td>
+                                                <td>
+                                                    @if (item.GoldenGoalGame.match_status == "Đã kết thúc")
+                                                    {
+                                                        <span>@item.GoldenGoalGame.player_name_result (phút @(item.minute_goalscorer)')</span>
+                                                    }
+                                                    else if(item.GoldenGoalGame.match_status == "Tạm hoãn")
+                                                    {
+                                                        <span>Trận đấu bị hoãn</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (item.GoldenGoalGame.match_status == "Đã kết thúc" || item.GoldenGoalGame.match_status == "Tạm hoãn")
+                                                    {
+                                                        if (item.player_id_result == item.GoldenGoalGame.player_id_result && item.minute_goalscorer == item.GoldenGoalGame.minute_goalscorer)
+                                                        {
+                                                            <p style="font-size:11px" class="label label-success">Chính xác</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p style="font-size:11px" class="label label-danger">Không chính xác</p>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <p style="font-size:11px" class="label label-default">Chờ xác định</p>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Warehouse.Common.Format.FormatDateTime(item.CreatedDate)
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (listCheckCanEditPlayGoldenGoalGame[item.Id])
+                                                    {
+                                                    <a href="@Url.Action("_EditMyGoldenGoldGameModal", new { Id = item.Id })" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-editPlayGoldenGoldGame"><i class="fa fa-edit"></i> Sửa</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btn btn-default btn-sm" disabled><i class="fa fa-edit"></i> Sửa</button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-ajax" id="modal-editPlayGoldenGoldGame">
+            <div class="modal-dialog">
+                <div class="modal-content" id="modal-content">
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+</section>

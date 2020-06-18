@@ -1,0 +1,167 @@
+﻿@model IEnumerable<ForumCategory>
+
+@{
+    ViewBag.Title = "Chủ Đề Forum";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+}
+
+@section scripts{
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#tblData').DataTable({
+                searching: false,
+                lengthChange: false,
+                ordering: false,
+                paging: false
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $(document).on("show.bs.modal", "#modal-createForumCategory", function (e) {
+                var link = $(e.relatedTarget);
+                $(this).find(".modal-content").load(link.attr("href"));
+            });
+            $(document).on("submit", "form[name=frm]", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "Post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.status == 1) {
+                            window.location.reload();
+                        }
+                        else {
+                            ShowPopUpError(result.message);
+                        }
+                    },
+                    error: function () {
+                        ShowPopUpError("Lỗi ajax!");
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index","Dashboard")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div>
+                        <a data-toggle="modal" href="@Url.Action("_CreateModal")" class="btn bg-green btn-xs" data-target="#modal-createForumCategory">Thêm Chủ Đề</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="tblData" class="table table-bordered table-middle" method="post">
+                            <thead>
+                                <tr>
+                                    <td class="text-center">
+                                        Số thứ tự
+                                    </td>
+                                    <th>Tên chủ đề</th>
+                                    <th class="text-center">Hiển thị</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Người tạo</th>
+                                    <th class="col-xs-2 text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (ForumCategory item in Model)
+                                {
+                                <tr>
+                                    <td class="text-center">
+                                        @item.SortOrder
+                                    </td>
+                                    <td>
+                                        <span class="@(item.ColorCode) tt-badge">@Html.DisplayFor(m => item.Name)</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.Display == true)
+                                        {
+                                            <label class="label label-success">Hiển thị</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="label label-danger">Ẩn</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.DateCreated.HasValue)
+                                        {
+                                            @Warehouse.Common.Format.FormatDateTime(item.DateCreated.Value)
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.UserCreated
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a class="btn bg-blue btn-xs" data-target="#modal-detailForumCategory" data-toggle="modal" href="@Url.Action("_DetailModal", new { Id = item.Id })"><i class="fa fa-eye"></i> Xem</a>
+                                        <a class="btn bg-blue btn-xs" href="@Url.Action("_EditModal",new { Id = item.Id })" data-toggle="modal" data-target="#modal-editForumCategory"><i class="fa fa-edit"></i> Sửa </a>
+                                        <a class="btn bg-red btn-xs" data-target="#modal-deleteForumCategory" data-toggle="modal" href="@Url.Action("_DeleteModal", new { Id = item.Id })"><i class="fa fa-remove"></i> Xóa</a>
+                                    </td>
+                                </tr>
+                                }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modal-detailForumCategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-createForumCategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-editForumCategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-deleteForumCategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,98 @@
+﻿﻿<style>
+    .sports-news img {
+        width: 80%;
+        display: block;
+        margin: 0 auto
+    }
+
+    .descriptionTip {
+        text-align: justify;
+    }
+</style>
+@model Article
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="Index" ng-init="InitHome()">
+    <!-- page title & breadcrumbs start -->
+    <div class="bdcmb-bg4 page-head parallax overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title text-center">
+                        <h3>@Model.Title</h3>
+                    </div>
+                </div>
+                <!-- /.colour-service-1-->
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="/">Trang chủ</a></li>
+                        <li>।</li>
+                        <li>Tin thể thao</li>
+                        <li>।</li>
+                        <li class="active">@Model.ArticleCategory.Name</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.page-header -->
+    <!-- page title & breadcrumbs end -->
+
+    <div class="news-area pad60">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-9">
+                    <div class="sports-news mb60">
+                        
+                         
+                        <p>@Html.Raw(Model.Content)</p>
+                        
+                    </div>
+                </div>
+				
+                <div class="col-md-12 col-lg-3 match-box">
+					 
+                    <div class="recent-news">
+                        <div class="section-title news-title">
+                            <h4><span>Tin nổi bật</span></h4>
+                        </div>
+                        @foreach (Article item in ViewBag.hotArticles)
+                        {
+                            <div class="comment-box mt30">
+                                <img src="~/Photos/Articles/@item.Image" alt="sport img">
+                                <div class="user-cmnt">
+                                    <a href="@Url.Action("Details",new { alias = item.Alias })"> <span>@item.Title</span></a>
+                                    <p>Danh Mục : @item.ArticleCategory.Name</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+					 
+                    <div class="scores-tab mt50">
+                        <div class="section-title">
+                            <h4> <span>top bàn thắng</span></h4>
+                        </div>
+
+                        <div class="tab-content bnr2 parallax-scrl " id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="player-box bb-1" ng-repeat="item in TopScores">
+                                    <img src={{item.team_logo}} alt="messi">
+                                    <div class="player-dtl">
+                                        <h4>{{item.player_name}}</h4>
+                                        <p>{{item.goals}} Goals</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿* API KEY : f9617bfb9d3f9845f85603549fbc70b5e8564ea3bed743f46104fa24f09305cb ( GET )
+* Tài khoản Trang lấy API : 
+Email : chuyenlaptrinh@gmail.com
+Pass : lehoangthienvu1995
+* Link Git project : https://dev.azure.com/teenboylaanh/TipBongDa/_git/TipBongDa
+
+------------------------------------------------------------------------------
+
+1 / Trả về danh sách các quốc gia được hỗ trợ có trong gói thuê bao hiện tại của bạn ( đang xài gói FREE ) 
+https://apiv2.apifootball.com/?action=get_countries&APIkey=xxxxxxxxxxxxxx
+
+2 / Trả về danh sách các cuộc thi được hỗ trợ có trong gói đăng ký hiện tại của bạn	(CẦN)
+https://apiv2.apifootball.com/?action=get_leagues&country_id=41&APIkey=xxxxxxxxxxxxxx
+
+3 / Trả về danh sách các đội có sẵn							(CẦN)
+https://apiv2.apifootball.com/?action=get_teams&league_id=148&APIkey=xxxxxxxxxxxxxx
+
+4 / Trả về thông tin cầu thủ có sẵn
+https://apiv2.apifootball.com/?action=get_players&player_name=ronaldo cristiano&APIkey=xxxxxxxxxxxxxx
+
+5 / Trả về bảng xếp hạng cho các giải đấu được bao gồm trong gói đăng ký hiện tại của bạn  (CẦN)
+https://apiv2.apifootball.com/?action=get_standings&league_id=148&APIkey=xxxxxxxxxxxxxx
+
+6 / Trả về các sự kiện có trong gói thuê bao hiện tại của bạn
+https://apiv2.apifootball.com/?action=get_events&from=2019-04-01&to=2019-0403&league_id=148&APIkey=xxxxxxxxxxxxxx
+
+7 / Trả về đội hình của một sự kiện		(CẦN)
+https://apiv2.apifootball.com/?action=get_lineups&match_id=24562&APIkey=xxxxxxxxxxxxxx
+
+8 / Trả về số liệu thống kê của một sự kiện	(CẦN)
+https://apiv2.apifootball.com/?action=get_statistics&match_id=24562&APIkey=xxxxxxxxxxxxxx
+
+9 / Trả về tỷ lệ cược (1x2, BTS, O / U, AH) cho các sự kiện có trong gói đăng ký hiện tại của bạn		(CẦN)
+https://apiv2.apifootball.com/?action=get_odds&from=2019-04-02&to=2019-04-03&APIkey=xxxxxxxxxxxxxx
+
+10 / Trả về các trò chơi cuối cùng giữa các đội đã gửi và các trò chơi cuối cùng của mỗi đội
+https://apiv2.apifootball.com/?action=get_H2H&firstTeam=Chelsea&secondTeam=Arsenal&APIkey=xxxxxxxxxxxxxx
+
+11 / Trả về dự đoán được tính toán cho các sự kiện có trong gói đăng ký hiện tại của bạn		
+https://apiv2.apifootball.com/?action=get_predictions&from=2019-06-01&to=2019-06-08&APIkey=xxxxxxxxxxxxxx
+
+12 / Trả về thông tin của 1 đội : 
+https://apiv2.apifootball.com/?action=get_teams&team_id=Team_id&APIkey=xxxx

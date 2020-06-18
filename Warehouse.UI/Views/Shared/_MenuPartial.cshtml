@@ -1,0 +1,105 @@
+﻿@model InfoWeb
+
+<div class="nav-menu full-black" id="sticky-menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href=@Url.Action("Index","Home")>
+                        <img src="~/images/@Model.Logo"
+                                alt="Logo">
+                    </a>
+                    <button class="navbar-toggler d-md-inlline d-xl-none" type="button"
+                            data-toggle="collapse" data-target="#navbarNavDropdown"
+                            aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="fa fa-bars"></span>
+                    </button>
+                </div>
+            </div>
+            <!--col end-->
+            <div class="col-lg-10">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav ml-auto">
+                            @*<li class="nav-item @ViewBag.ActiveHome">
+                                <a class="nav-link" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                            </li>*@
+                            <li class="nav-item dropdown @ViewBag.ActiveGame">
+                                <a class="nav-link dropdown-toggle" href="index.html" data-toggle="dropdown"
+                                   aria-haspopup="true" role="button" aria-expanded="false">Tranh Tài Miễn Phí</a>
+                                <div class="dropdown-menu animation  slideUpIn">
+                                    <a class="dropdown-item" href="@Url.Action("NhaTienTri1x2","Game")">Nhà Tiên Tri 1x2</a>
+                                    <a class="dropdown-item" href="@Url.Action("BanThangVang","Game")">Bàn Thắng Vàng</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item @ViewBag.ActiveCamNang">
+                                <a class="nav-link" href="@Url.Action("Index", "Handbook")">Cẩm Nang</a>
+                            </li>
+                            <li class="nav-item @ViewBag.ActiveBog">
+                                <a class="nav-link" href="@Url.Action("Index", "Blog")">Blog</a>
+                            </li>
+                            <li class="nav-item @ViewBag.ActiveForum">
+                                <a class="nav-link" href=@Url.Action("Index","Forum")>Forum</a>
+                            </li>
+                            <li class="nav-item dropdown @ViewBag.ActiveAccount">
+                                <a class="nav-link dropdown-toggle" href="index.html" data-toggle="dropdown"
+                                   aria-haspopup="true" role="button" aria-expanded="false">Tài Khoản</a>
+                                <div class="dropdown-menu animation  slideUpIn">
+                                    @if (User.Identity.IsAuthenticated == false)
+                                    {
+                                        <a class="dropdown-item" href=@Url.Action("Login", "Account")> Đăng Nhập</a>
+                                        <a class="dropdown-item" href=@Url.Action("Register", "Account")> Đăng Ký Thành Viên</a>
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                        }
+                                        <a class="dropdown-item" href=@Url.Action("Index", "Manage")> Quản Lý Tài Khoản</a>
+                                        <a class="dropdown-item" href=javascript:document.getElementById('logoutForm').submit()> Đăng Xuất</a>
+                                    }
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#modalThongBao" title="Thông báo từ quản trị viên" data-toggle="modal">
+                                    <img class="bellimg" src="/images/bell.png" width="30" height="30" style="margin-top:-5px">
+                                    @{ 
+                                        string countAlertToShow = Html.Action("CountListToShow", "Alert").ToString();
+                                    }
+                                    <label class="badge" style="background:red">@(countAlertToShow != "0" ? countAlertToShow : "")</label>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0)" >
+                                    <span class="tmzone" title="Tất cả thời gian được hiển thị là trong múi giờ địa phương của bạn là GMT +7">GMT +7</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!--col end-->
+            @*<div class="col-lg-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item d-none d-lg-inline">
+                        <div class="icon-menu">
+                            <ul>
+                                <li>
+                                    <a href="#" class="search-btn search-box-btn">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>*@
+            <!--col end-->
+        </div>
+        <!--row end-->
+    </div>
+</div>
+

@@ -1,0 +1,251 @@
+﻿@model Prophet1x2Game
+@{
+    InfoWeb infoWeb = ViewBag.InfoWeb;
+    int point = ViewBag.Point;
+}
+
+<div id="nhatientri1x2" class="ftpp10tabcont hidden">
+    <div id="ftpp101-1050">
+        <div class="p10-gray-bg">
+            <input type="hidden" id="weekid" name="" value="406">
+            <input type="hidden" id="roundsel" name="" value="Round 32">
+            <!-- new dropdown -->
+            @if (ViewBag.ListRound != null)
+            {
+                <div class="roundNhaTienTri">
+                    @Html.DropDownList("ListRound", null, new { id = "cbRound", style = "background:#fff", @class = "dropdown dropdown-item" })
+                </div>
+            }
+            <!-- new dropdown -->
+            @*<div class="p10-btns orange-btn randompick" id="p10rand-btn" style="margin: 5px 50px 0 420px;">Chọn ngẫu nhiên</div>*@
+            <div class="p10-score">Điểm số <span id="scoreround">@point</span>/<span id="totalmatch">10</span></div>
+            <div class="table p10-table" id="divtable">
+                <div class="row p10-first-row">
+                    <div class="cell">Thời gian</div>
+                    <div class="cell">Giải đấu</div>
+                    <div class="cell">Đội nhà</div>
+                    <div class="cell">Đội nhà thắng</div>
+                    <div class="cell">Hòa</div>
+                    <div class="cell">Đội khách thắng</div>
+                    <div class="cell">Đội khách</div>
+                    <div class="cell">Stats</div>
+                    <div class="cell">&nbsp;</div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">14 Mar - 23:30</div>
+                    <div class="cell">French Ligue 1</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/MontpellierHSC_logo.png"></div>
+                        <span>Montpellier</span>
+                    </div>
+                    <div class="cell"><span id="homesel0" class="p10-play-btns selresrow end selrow0" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel0" class="p10-play-btns selresrow end selrow0" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel0" class="p10-play-btns selresrow end selrow0" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Marseille</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Olympique_Marseille.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow0"></div>
+                    </div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">15 Mar - 02:00</div>
+                    <div class="cell">French Ligue 1</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Brest_logo918199111.png"></div>
+                        <span>Brest</span>
+                    </div>
+                    <div class="cell"><span id="homesel1" class="p10-play-btns selresrow end selrow1" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel1" class="p10-play-btns selresrow end selrow1" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel1" class="p10-play-btns selresrow end selrow1" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Lille OSC</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Lille_logo.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow1"></div>
+                    </div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">16 Mar - 00:30</div>
+                    <div class="cell">Spanish La Liga</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Leganes_logo.png"></div>
+                        <span>Leganes</span>
+                    </div>
+                    <div class="cell"><span id="homesel2" class="p10-play-btns selresrow end selrow2" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel2" class="p10-play-btns selresrow end selrow2" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel2" class="p10-play-btns selresrow end selrow2" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Real  Valladolid</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/RealValladolid_logo.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow2"></div>
+                    </div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">16 Mar - 00:30</div>
+                    <div class="cell">Spanish La Liga</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/CeltadeVigo_logo.png"></div>
+                        <span>Celta Vigo</span>
+                    </div>
+                    <div class="cell"><span id="homesel3" class="p10-play-btns selresrow end selrow3" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel3" class="p10-play-btns selresrow end selrow3" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel3" class="p10-play-btns selresrow end selrow3" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Villarreal</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Villarreal.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow3"></div>
+                    </div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">16 May - 20:30</div>
+                    <div class="cell">German Bundesliga</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Hoffenheim_logo.png"></div>
+                        <span>Hoffenheim</span>
+                    </div>
+                    <div class="cell"><span id="homesel4" class="p10-play-btns selresrow end selrow4" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel4" class="p10-play-btns selresrow end selrow4" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel4" class="p10-play-btns selresrow end selrow4" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Hertha Berlin</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/HerthaBerlin_logo.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow4"></div>
+                    </div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">16 May - 20:30</div>
+                    <div class="cell">German Bundesliga</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/RB_Leipzig_logo127323724.png"></div>
+                        <span>RB Leipzig</span>
+                    </div>
+                    <div class="cell"><span id="homesel5" class="p10-play-btns selresrow end selrow5" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel5" class="p10-play-btns selresrow end selrow5" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel5" class="p10-play-btns selresrow end selrow5" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Freiburg</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Freiburg_logo.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow5"></div>
+                    </div>
+                </div>
+                <div class="row ended">
+                    <div class="cell text-center">17 May - 23:00</div>
+                    <div class="cell">German Bundesliga</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Union_Berlin_logo1639833748.png"></div>
+                        <span>Union Berlin</span>
+                    </div>
+                    <div class="cell"><span id="homesel6" class="p10-play-btns selresrow end selrow6" style="cursor:default">1</span></div>
+                    <div class="cell"><span id="drawsel6" class="p10-play-btns selresrow end selrow6" style="cursor:default">X</span></div>
+                    <div class="cell"><span id="awaysel6" class="p10-play-btns selresrow end selrow6" style="cursor:default">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Bayern Munich</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Bayern München.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold" id="resultrow6"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell text-center">20 Jun - 00:00</div>
+                    <div class="cell">English Premier League</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/NorwichCity_logo.png"></div>
+                        <span>Norwich City</span>
+                    </div>
+                    <div class="cell"><span id="homesel7" onclick="selection(&quot;#homesel7&quot;,&quot;.selrow7&quot;)" class="p10-play-btns selhome7 selclear selrow7">1</span></div>
+                    <div class="cell"><span id="drawsel7" onclick="selection(&quot;#drawsel7&quot;,&quot;.selrow7&quot;)" class="p10-play-btns seldraw7 selclear selrow7">X</span></div>
+                    <div class="cell"><span id="awaysel7" onclick="selection(&quot;#awaysel7&quot;,&quot;.selrow7&quot;)" class="p10-play-btns selaway7 selclear selrow7">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Southampton</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Southampton_logo1177376650.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold"> — </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell text-center">21 Jun - 01:45</div>
+                    <div class="cell">English Premier League</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Bournemouth.png"></div>
+                        <span>Bournemouth</span>
+                    </div>
+                    <div class="cell"><span id="homesel8" onclick="selection(&quot;#homesel8&quot;,&quot;.selrow8&quot;)" class="p10-play-btns selhome8 selclear selrow8">1</span></div>
+                    <div class="cell"><span id="drawsel8" onclick="selection(&quot;#drawsel8&quot;,&quot;.selrow8&quot;)" class="p10-play-btns seldraw8 selclear selrow8">X</span></div>
+                    <div class="cell"><span id="awaysel8" onclick="selection(&quot;#awaysel8&quot;,&quot;.selrow8&quot;)" class="p10-play-btns selaway8 selclear selrow8">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Crystal Palace</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/Crystal_Palace_logo304349153.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold"> — </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell text-center">21 Jun - 20:00</div>
+                    <div class="cell">English Premier League</div>
+                    <div class="cell uppercase teamcontainer">
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/newcastle.png"></div>
+                        <span>Newcastle</span>
+                    </div>
+                    <div class="cell"><span id="homesel9" onclick="selection(&quot;#homesel9&quot;,&quot;.selrow9&quot;)" class="p10-play-btns selhome9 selclear selrow9">1</span></div>
+                    <div class="cell"><span id="drawsel9" onclick="selection(&quot;#drawsel9&quot;,&quot;.selrow9&quot;)" class="p10-play-btns seldraw9 selclear selrow9">X</span></div>
+                    <div class="cell"><span id="awaysel9" onclick="selection(&quot;#awaysel9&quot;,&quot;.selrow9&quot;)" class="p10-play-btns selaway9 selclear selrow9">2</span></div>
+                    <div class="cell uppercase text-right teamcontainer">
+                        <span>Sheff Utd</span>
+                        <div class="teamlogo"><img src="https://www.tipsportal.com/uploads/teams/SheffieldUnited_logo.png"></div>
+                    </div>
+                    <div class="cell text-center"><a href=""><img src="https://www.tipsportal.com/public/img/stats-icon.png" style="display:none"></a></div>
+                    <div class="cell text-center">
+                        <div class="p10-icon-result" style="font-weight:bold"> — </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="p10-btns gray-btn float-right" id="p10clear-btn">Xóa</div>*@
+            <div class="p10-btns orange-btn float-right" id="p10betting-btn">Gửi dự đoán</div>
+        </div>
+    </div>
+</div>
+
+<div id="thele" class="ftpp10tabcont hidden">
+    <article class="pad30">
+        @Html.Raw(infoWeb.Prophet1x2GameRule)
+    </article>
+</div>
+
+<div id="danhsachnguoichienthang" class="ftpp10tabcont hidden">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="bg-primary">
+                <tr>
+                    <th class="text-center">Thành viên</th>
+                    <th class="text-center">Phần thưởng</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+    </div>
+</div>

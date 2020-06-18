@@ -1,0 +1,12 @@
+﻿@model Alert
+<div class="modal-header bg-info">
+    <h4 class="modal-title">Xem Nội Dung</h4>
+</div>
+<div class="modal-body">
+    <div class="box-body">
+         @Html.Raw(Model.Content)
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+</div>

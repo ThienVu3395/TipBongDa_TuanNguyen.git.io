@@ -1,0 +1,121 @@
+﻿@model GoldenGoalGame
+
+@{
+    InfoWeb infoWeb = ViewBag.InfoWeb;
+    List<PlayGoldenGoalGame> playersWinner = ViewBag.PlayersWinner;
+    long BonusGoldenGoalGane = long.Parse(System.Configuration.ConfigurationManager.AppSettings["BonusGoldenGoalGane"].ToString());
+}
+
+
+<div id="banthangvang" class="hidden">
+    <div id="ggbg" class="ggp" style="width:100%; margin: 0 auto;min-height:530px;background:url('/images/Golden_goal_default.jpg') no-repeat center center">
+        @if (ViewBag.ListRound != null)
+        {
+            <div class="roundBanThangVang">
+                @Html.DropDownList("ListRound", null, new { id = "cbRound", style = "background:#fff", @class = "dropdown dropdown-item" })
+            </div>
+        }
+    </div>
+    @if (Model != null)
+    {
+        <form action="@Url.Action("BanThangVang")" class="form-horizontal form-label-left" id="frmDuDoan" method="post" accept-charset="utf-8">
+            @Html.AntiForgeryToken()
+            <div id="ggmiddle" class="ggp pad30">
+                <h2 class="text-center text-uppercase" style="margin-bottom: 0; display: none;">Bàn thắng vàng</h2>
+                <h3 class="text-uppercase" id="league_nick">@Model.league_name</h3>
+                <h1 class="text-uppercase" id="teamslist"><b>@Model.match_hometeam_name<br>@Model.match_awayteam_name<br></b></h1>
+                <h3 style="margin-top: 10px;" id="setMatchDate">@Model.match_time, @Model.match_date</h3>
+                <div id="teamimg">
+                    <img id="home_logo" src="@Model.match_hometeam_logo" style="">
+                    <img id="away_logo" src="@Model.match_awayteam_logo" style="">
+                </div>
+                <div class="" style="overflow:hidden">
+                    <select name="PlayersHomeTeam" class="form-control pull-left">
+                        <option value="0" selected>Chọn cầu thủ ghi bàn</option>
+                        @foreach (var player in ViewBag.PlayersHomeTeam)
+                        {
+                            <option value="@player.player_key">@player.player_name</option>
+                        }
+                    </select>
+                    <select name="PlayersAwayTeam" class="form-control pull-right">
+                        <option value="0" selected>Chọn cầu thủ ghi bàn</option>
+                        @foreach (var player in ViewBag.PlayersAwayTeam)
+                        {
+                            <option value="@player.player_key">@player.player_name</option>
+                        }
+                    </select>
+                </div>
+                <div class="text-center">
+                    <input type="text" class="form-control" style=" width: 300px;margin: 0 auto;padding: 10px;" name="minute_goalscorer" min="1" step="1" max="120" placeholder="Số phút bàn thắng đầu tiên được ghi" />
+                </div>
+                @if (Model.match_status == "" || Model.match_status == "Chưa đá")
+                {
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        if (ViewBag.CheckHavePlayed == false)
+                        {
+                            <button type="submit" id="btnsubmit" style="cursor:pointer;background:#000">Gửi dự đoán</button>
+                        }
+                        else
+                        {
+                            <button type="button" style="background:#000">Bạn đã dự đoán trận này</button>
+                        }
+                    }
+                    else
+                    {
+                        <button type="button">Bạn cần đăng nhập để dự đoán</button>
+                    }
+                }
+                @if (Model.match_status == "Đã kết thúc")
+                {
+                    <div id="ggresult" style="">
+                        <div>Kết quả:</div>	@Model.player_name_result | @Model.minute_goalscorer minutes
+                    </div>
+                }
+            </div>
+        </form>
+    }
+    else
+    {
+        <h3>Không có dữ liệu</h3>
+    }
+</div>
+
+<div id="thele" class="hidden">
+    <article class="pad30">
+        @Html.Raw(infoWeb.GoldenGoalGameRule)
+    </article>
+</div>
+
+<div id="danhsachnguoichienthang" class="hidden">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="bg-primary">
+                <tr>
+                    <th class="text-center">Thành viên</th>
+                    <th class="text-center">Phần thưởng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (playersWinner.Count > 0)
+                {
+                    foreach (var item in playersWinner)
+                    {
+                        <tr>
+                            <td class="text-center">@item.UserName</td>
+                            <td class="text-center">@((BonusGoldenGoalGane / (float)playersWinner.Count).ToString("#,##0").Replace(',', '.')) VNĐ</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <p class="alert alert-info">Chưa có người chiến thắng.</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

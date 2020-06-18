@@ -1,0 +1,197 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model List<Article>
+@{
+    ViewBag.Title = "Trang chủ";
+    InfoWeb infoWeb = ViewBag.InfoWeb;
+}
+@section Styles{
+    <style>
+        .descriptionTip {
+            text-align: justify;
+        }
+
+        
+        .white-color{
+            color:white
+        }
+    </style>
+    <link href="~/Content/Flexible-Responsive-jQuery/slider.css" rel="stylesheet" />
+}
+@section Scripts{
+
+    <script src="~/Content/Flexible-Responsive-jQuery/slider.js"></script>
+    <script>
+        $("#slider").sliderUi({
+
+            // Auto play when page loads
+            autoPlay: true,
+
+            // animation delay in ms
+            delay: 5000,
+
+            // display controls
+            controlShow: false,
+
+            // display arrows navigation
+            arrowsShow: true,
+
+            // display image captions
+            caption: false,
+
+            // animation speed
+            speed: 500,
+
+            // CSS3 easing effects
+            cssEasing: "ease-out"
+
+        });
+    </script>
+}
+<!--match-box area start-->
+<div class="match-box" ng-controller="Index" ng-init="InitHome()">
+    <div class="slider-container" id="slider">
+        <div class="slider">
+            @foreach (Slide slide in ViewBag.Slides)
+            {
+                <div>
+                    <img src="~/Photos/Slides/@slide.Image" alt="@slide.Title">
+                    <span class="caption"> </span>
+                </div>
+            }
+        </div>
+
+        <!-- Controls -->
+        <div class="switch" id="prev"><span></span></div>
+        <div class="switch" id="next"><span></span></div>
+    </div>
+    <div class="container" style="padding-top:40px;padding-bottom:40px;">
+        <div class="row">
+            <!--row end-->
+            <div class="col-md-12 col-lg-9">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h4> <span>Nhận Định & Tips Mới Nhất</span></h4>
+                        </div>
+                    </div>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var articleItem = Model.ElementAt(i);
+                        <div class="col-sm-6 col-md-4">
+                            <div class="post-area">
+                                <div class="trans-news mt20 text-center">
+                                    <a href="@Url.Action("Details", "Article", new { alias = articleItem.Alias })"><img class="img-fluid full-wdth mb30" src="~/Photos/Articles/@articleItem.Image" alt="@articleItem.Title" /></a>
+                                    <h5 class="mb15 text-justify"><a title="@articleItem.Title" href="@Url.Action("Details", "Article", new { alias = articleItem.Alias })">@articleItem.Title</a></h5>
+                                    <p title="@articleItem.ShortDescription" class="descriptionTip">@articleItem.ShortDescription</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div style="clear:both">&nbsp;</div>
+                    <div class="col-lg-12 mt30">
+                        <div class="section-title">
+                            <h4> <span>Blog Mới</span></h4>
+                        </div>
+                    </div>
+                    @foreach (Blog item in ViewBag.Blogs)
+                    {
+                        <div class="col-sm-6">
+                            <div class="trans-news nws2 wht-txt mt20">
+                                <a href="@Url.Action("Detail", "Blog", new { alias = item.Alias })"><img class="img-fluid full-width mb30 " src="~/Photos/Blogs/@item.Image" alt="@item.Title"></a>
+                                <h5 class="mb15"><a href="@Url.Action("Detail", "Blog", new { alias = item.Alias })">@item.Title</a></h5>
+                                <p>@item.ShortDescription</p>
+                            </div>
+                        </div>
+                    }
+                    <div style="clear:both">&nbsp;</div>
+                    <div class="col-lg-12 mt30">
+                        <div class="section-title">
+                            <h4> <span>Cẩm Nang Mới</span></h4>
+                        </div>
+                    </div>
+                    @foreach (Handbook item in ViewBag.Handbooks)
+                    {
+                        <div class="col-sm-6">
+                            <div class="trans-news nws2 wht-txt mt20">
+                                <a href="@Url.Action("Detail", "Handbook", new { alias = item.Alias })"><img class="img-fluid full-width mb30 " src="~/Photos/Handbooks/@item.Image" alt="@item.Title"></a>
+                                <h5 class="mb15"><a href="@Url.Action("Detail", "Handbook", new { alias = item.Alias })">@item.Title</a></h5>
+                                <p>@item.ShortDescription</p>
+                            </div>
+                        </div>
+                    }
+                    <div style="clear:both">&nbsp;</div>
+                    <div class="col-lg-12 mt30">
+                        <article id="aboutInHome" style="height:200px; overflow-y:hidden;">
+                            @Html.Raw(infoWeb.AboutInHome)
+                        </article>
+                        <div style="clear:both;" class="text-center">
+                            <a href="@Url.Action("About","Home")"><i class="glyphicon glyphicon-arrow-down"></i> Xem đầy đủ </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--col end-->
+            <div class="col-md-12 col-lg-3">
+                <div class="section-title xs-mt-50">
+                    <h4> <span>kết quả gần nhất</span></h4>
+                </div>
+                <div class="score-slider owl-carousel bnr1 mini-bg mt40" >
+                    <div class="result-box p-1">
+                        <div ng-repeat="item in MatchTable track by $index" ng-show="$index < 5">
+                            <div class="club-result" data-toggle="tooltip" title="{{item.match_hometeam_name}} vs {{item.match_awayteam_name}}">
+                                <div class="club-img">
+                                    <img src={{item.team_home_badge}} alt="{{item.match_hometeam_name}}">
+                                    <small>{{item.match_hometeam_name}}</small>
+                                </div>
+                                <div class="score">
+                                    <small>{{item.match_hometeam_score}}</small>
+                                    <small>{{item.match_awayteam_score}}</small>
+                                </div>
+                                <div class="club-img">
+                                    <small>{{item.match_awayteam_name}}</small>
+                                    <img src={{item.team_away_badge}} alt="{{item.match_awayteam_name}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footbal-table-area mt50">
+                    <div class="section-title">
+                        <h4> <span>Bảng Xếp Hạng</span></h4>
+                    </div>
+                    <div class="foot-tbl bnr1 mini-bg mt40">
+                        <h5>{{LeagueName}}</h5>
+                        <div class="point-table" ng-repeat="item in RankTable">
+                            <div class="team-rank">
+                                <img class="sml-logo" src="{{item.team_badge}}" alt="club-logo">
+                                <span>{{item.overall_league_position}}. {{item.team_name}}</span>
+                            </div>
+                            <span>{{item.overall_league_PTS}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scores-tab mt50">
+                    <div class="section-title">
+                        <h4> <span>top bàn thắng</span></h4>
+                    </div>
+                    
+                    <div class="tab-content bnr2 parallax-scrl " id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="player-box bb-1" ng-repeat="item in TopScores">
+                                <img src={{item.team_logo}} alt="messi" width="50" height="50">
+                                <div class="player-dtl">
+                                    <h4>{{item.player_name}}</h4>
+                                    <p>{{item.goals}} Goals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--col end-->
+        </div>
+        <!--row end-->
+    </div>
+</div>
+<!--match-box area end-->

@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title | TIPS BÓNG ĐÁ</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/assets/favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Content/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Content/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Content/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Content/assets/favicon/apple-icon-144x144.png">
+
+    <!--All Css Here-->
+    <!--Bootstrap Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/vendor/bootstrap.min.css">
+
+    <!--Font-Awesome Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/vendor/font-awesome.min.css">
+    <!--Owl-Carousel Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/vendor/owl.carousel.min.css">
+    <!--Animate Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/vendor/animate.css">
+    <!--magnific popup Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/vendor/magnific-popup.css">
+    <!--Jquery Ui Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/vendor/jquery-ui.min.css">
+    <!--Style Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/style.css?v=2">
+    <!--Responsive Css-->
+    <link rel="stylesheet" href="~/Content/assets/css/responsive.css">
+    @*Block UI AngularJS*@
+    <link href="~/Content/angular-block-ui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/assets/css/custom.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
+
+    <!--[if lt IE 9]>
+        <script src="/oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="/oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="~/Content/assets/js/vendor/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=141561017104958&autoLogAppEvents=1"></script>
+    <!-- preloader -->
+    <div class="preloader">
+        <div class='loader'>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--text'></div>
+        </div>
+    </div>
+    <!-- preloader -->
+
+    <div class="main-container" ng-app="CommonApp" ng-controller="Index">
+        <!-- /.header start -->
+        <header>
+            @Html.Action("_MenuPartial", "Shared")
+
+            @RenderSection("Sub", false)
+        </header>
+
+        @Html.Action("_AlertPartial", "Alert")
+
+        <!--header end-->
+
+        <section id="content" style="min-height:300px;">
+            @RenderBody()
+        </section>
+
+        @Html.Action("_FooterPartial", "Shared")
+    </div>
+    <!--main-container-->
+    <!--Search Popup-->
+    @*<div id="search-popup" class="search-popup">
+            <div class="close-search theme-btn"><span class="fa fa-close"></span></div>
+            <div class="popup-inner">
+
+                <div class="search-form">
+                    <form method="post" action="@Url.Action("Search","Shared")">
+                        <div class="form-group">
+                            <fieldset>
+                                <input type="search" class="form-control" name="keyword" value=""
+                                       placeholder="Nhập tên bài tip, cẩm nang, blog ..." required>
+                                <input type="submit" value="Tìm Kiếm" class="theme-btn">
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>*@
+    <!--End Search Popup-->
+    <!-- back to to btn start -->
+    <div id="back-to-top"></div>
+    <!-- back to to btn end -->
+    <!--All Js Here-->
+    <!-- jquery latest version -->
+    <script data-cfasync="false" src="~/Content/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+    <!--Migrate Js-->
+    <script src="~/Content/assets/js/vendor/jquery-migrate.js"></script>
+    <!--Popper Js-->
+    <script src="~/Content/assets/js/vendor/popper-1.12.3.min.js"></script>
+    <!--Bootstrap Js-->
+    <script src="~/Content/assets/js/vendor/bootstrap.min.js"></script>
+
+    <!--Owl-Carousel Js-->
+    <script src="~/Content/assets/js/vendor/owl.carousel.min.js"></script>
+    <!--magnific-popup js-->
+    <script src="~/Content/assets/js/vendor/jquery.magnific-popup.min.js"></script>
+    <!--countdown Js-->
+    <script src="~/Content/assets/js/vendor/countdown.js"></script>
+    <!--counter Js-->
+    <script src="~/Content/assets/js/vendor/jquery.counterup.min.js"></script>
+    <script src="~/Content/assets/js/vendor/waypoints-jquery.js"></script>
+    <!--Jquery Ui Js-->
+    <script src="~/Content/assets/js/vendor/jquery-ui.min.js"></script>
+    <!--Wow Js-->
+    <script src="~/Content/assets/js/vendor/wow.min.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- template main js file -->
+    <script src="~/Content/assets/js/main.js"></script>
+
+    @RenderSection("Scripts", false)
+
+    @*<script>
+        $(document).on("show.bs.modal", "#modalXemNoiDungThongBao", function (e) {
+            var link = $(e.relatedTarget);
+            $(this).find(".modal-content").html("");
+            $(this).find(".modal-content").load(link.attr("href"));
+        });
+    </script>*@
+
+    <script src="~/Scripts/angular.js"></script>
+
+    <script src="~/Scripts/angular-mocks.js"></script>
+
+    <script src="~/Scripts/angular-block-ui.min.js"></script>
+
+    <script src="~/Scripts/MyScripts/Common/Common.js"></script>
+
+    <script src="~/Scripts/MyScripts/Index/Index.js"></script>
+
+</body>
+</html>

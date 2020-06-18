@@ -1,0 +1,86 @@
+﻿@model List<League>
+<table id="tblData" class="table table-middle" ng-init="getLeague(@ViewBag.CountryId)">
+    <thead>
+        <tr>
+            <th class="text-center">Logo</th>
+            <th class="text-center">
+                Mã Giải Đấu
+            </th>
+            <th>Tên Giải Đấu</th>
+            <th class="text-center">Trạng Thái</th>
+            <th class="text-center">Đổi Trạng Thái</th>
+            <th class="text-center">Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (League item in Model)
+        {
+        <tr>
+            <td class="text-center">
+                <img src="~/Photos/Leagues/@item.logo" width="100" height="100" />
+            </td>
+            <td class="text-center">
+               @item.league_id
+            </td>
+            <td>
+                @item.league_name
+            </td>
+            <td class="text-center" data-status-leagueid="@item.league_id" data-status="@item.status">
+                @if (item.status == true)
+                {
+                    <label class="label label-success">Đang Kích Hoạt</label>
+                }
+                else
+                {
+                    <label class="label label-danger">Chưa Kích Hoạt</label>
+                }
+            </td>
+            <td class="text-center">
+                <form data-leagueid="@item.league_id" name="frmUpdateStatus" action="@Url.Action("ChangeStatus",new { countryID = ViewBag.CountryId, league_id = item.league_id})" method="post">
+                    @if (item.status == true)
+                    {
+                        <button onclick="return confirm('Bạn xác nhận đổi giải đấu này sang trạng thái Chưa Kích Hoạt?')" type="submit" class="btn btn-default btn-sm"><i class="fa fa-exchange"></i> Đổi Trạng Thái</button>
+                    }
+                    else
+                    {
+                        <button onclick="return confirm('Bạn xác nhận đổi giải đấu này sang trạng thái Đang Kích Hoạt?')" type="submit" class="btn btn-default btn-sm"><i class="fa fa-exchange"></i> Đổi Trạng Thái</button>
+
+                    }
+                </form>
+            </td>
+            <td class="text-center">
+                <a class="btn bg-blue btn-sm"  href="@Url.Action("Edit",new { country_id = item.country_id, league_id = item.league_id })"><i class="fa fa-edit"></i> Đổi Thông Tin</a>
+            </td>
+        </tr>
+        }
+</table>
+
+
+<script>
+    $(function () {
+        $('#tblData').DataTable({
+            searching: false,
+            lengthChange: false,
+            ordering: false,
+            paging: false,
+            //columnDefs: [{ orderable: false, targets: [3] }],
+        });
+        $("form[name=frmUpdateStatus]").submit(function (e) {
+            e.preventDefault();
+            var self = $(this);
+            $.post($(this).attr("action"), function (result) {
+                debugger
+                if (result.status == 1) {
+                    if (result.content == true) {
+                        $("[data-status-leagueid=" + $(self).attr("data-leagueid") + "]").html("<label class='label label-success'>Đang Kích Hoạt</label>");
+                    }
+                    else
+                        $("[data-status-leagueid=" + $(self).attr("data-leagueid") + "]").html("<label class='label label-danger'>Chưa Kích Hoạt</label>");
+                }
+                else {
+                    alert(result.content);
+                }
+            });
+        });
+    });
+</script>

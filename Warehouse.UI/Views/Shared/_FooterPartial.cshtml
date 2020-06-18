@@ -1,0 +1,89 @@
+﻿@model InfoWeb
+
+<footer>
+    <div class="footer-area bg2 parallax overlay2 pad60">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="footer-box">
+                        <div class="footer-content add">
+                            <div class="footer-logo footer-content">
+                                <img src="~/images/@Model.Logo" alt="Logo">
+                            </div>
+                            <p class="pt30">
+                                Chuyên trang kết quả bóng đá, lịch thi đấu, tỷ lệ, xem trực tuyến trận đấu cực nhanh và chính xác nhất.
+                            </p>
+                            <div class="add-info">
+                                <p>
+                                    <a href="#"><i class="fa fa-map-marker"></i></a>@Model.Address
+                                </p>
+                                <p>
+                                    <a href="#"><i class="fa fa-location-arrow"></i></a>
+                                    <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                                                                            data-cfemail="e695968994929ca6818b878f8ac885898b">[email&#160;protected]</a>
+                                </p>
+                                <p class="mb-0"><a href="tel:@Model.Phone"><i class="fa fa-phone"></i></a>@Model.Phone</p>
+                            </div>
+                        </div>
+
+                        <div class="footer-content">
+                            <div class="ftr-title xs-mt-40">
+                                <h4>Liên Kết</h4>
+                            </div>
+                            <div class="partners pt30">
+                                <a href="@Url.Action("Index", "Manage")">Quản Lý Tài Khoản</a>
+                                <a href="@Url.Action("About", "Home")">Về Chúng Tôi</a>
+                                <a href="@Url.Action("Contact", "Home")">Liên Hệ</a>
+                                @*<a href="@Url.Action("Index", "Handbook")">Cẩm Nang</a>
+                                <a href="@Url.Action("Index", "Blog")">Blog</a>
+                                <a href="@Url.Action("Index","Forum")">Forum</a>*@
+                                @foreach (Article item in ViewBag.Articles)
+                                {
+                                    <a href="@Url.Action("Details","Article", new { alias = item.Alias })">@item.Title</a>
+                                }
+                               
+                            </div>
+                        </div>
+
+                        <div class="footer-content">
+                            <div class="ftr-title xs-mt-40">
+                                <h4>Blog Mới</h4>
+                            </div>
+                            <div class="partners pt30">
+                            @foreach (Blog item in ViewBag.Blogs)
+                            {
+                                <a href="@Url.Action("Detail","Blog", new { alias = item.Alias })">@item.Title</a>
+                            }
+                            </div>
+                        </div>
+                        <div class="footer-content">
+                            <div class="ftr-title xs-mt-40">
+                                <h4>Fanpage</h4>
+                            </div>
+                            <div class="partners pt30">
+                                <div class="fb-page" data-href="@Model.Fanpage" data-tabs="timeline" data-width="" data-height="210" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+                                    <blockquote cite="@Model.Fanpage" class="fb-xfbml-parse-ignore">
+                                        <a href="@Model.Fanpage">Facebook</a>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--col end-->
+            </div>
+            <!--row end-->
+        </div>
+    </div>
+    <div class="copyright pad30">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Copyright © 2020 designed by <span>iThemeslab.</span> All Rights Reserved</h4>
+                </div>
+                <!--col end-->
+            </div>
+            <!--row end-->
+        </div>
+    </div>
+</footer>

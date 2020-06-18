@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "Lịch Thi Đấu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!-- DATA TABLES -->
+    <link href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+}
+
+@section scripts{
+    <script src="~/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //$("#example1").dataTable();
+            $('#events').dataTable({
+                "bPaginate": true,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bSort": false,
+                "bInfo": true,
+                "bAutoWidth": false
+            });
+
+            $('#reservation').daterangepicker({
+                locale: {
+                    //format: 'DD/MMM/YYYY'
+                    format: 'DD/MM/YYYY'
+                },
+            });
+
+            var goldenGoalsGameMatchId = @(ViewBag.GoldenGoalGamesMatchId ?? "[]" );
+            var prophet1x2GameDetailsMatchId = @(ViewBag.Prophet1x2GameDetailsMatchId ?? "[]");
+
+            function GetStatusGoldenGoalGame() {
+                $("[data-status-golden_goalgames]").each(function () {
+                    var match_id = parseInt($(this).attr("data-match_id"));
+                    if (goldenGoalsGameMatchId.indexOf(match_id) == -1) {
+                        $("#formAddForGoldenGoalGame_" + match_id).removeClass("hidden");
+                        $("#label_status_goldenGoalGames" + match_id).addClass("hidden");
+                    }
+                    else {
+                        $("#label_status_goldenGoalGames" + match_id).removeClass("hidden");
+                        $("#formAddForGoldenGoalGame_" + match_id).addClass("hidden");
+                    }
+                });
+            }
+
+            function GetStatusProphet1x2GameDetail() {
+                $("[data-status-prophet1x2Game]").each(function () {
+                    var match_id = parseInt($(this).attr("data-match_id"));
+                    if (prophet1x2GameDetailsMatchId.indexOf(match_id) == -1) {
+                        $("#formAddForProphet1x2Game_" + match_id).removeClass("hidden");
+                        $("#label_status_prophet1x2Game" + match_id).addClass("hidden");
+                    }
+                    else {
+                        $("#label_status_prophet1x2Game" + match_id).removeClass("hidden");
+                        $("#formAddForProphet1x2Game_" + match_id).addClass("hidden");
+                    }
+                });
+            }
+
+            $(function () {
+                $('#divMain').on("DOMSubtreeModified", function () {
+                    setTimeout(function () {
+                        GetStatusGoldenGoalGame();
+                        GetStatusProphet1x2GameDetail();
+                    }, 2000);
+                });
+                $(document).on("submit", "form[name=formAddForGoldenGoalGame]", function (e) {
+                    e.preventDefault();
+                    var td = $(this).parent();
+                    var match_id = $(td).attr("data-match_id");
+                    var self = $(this);
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        method: $(this).attr("method"),
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.status == 1) {
+                                $("#label_status_" + match_id).removeClass("hidden");
+                                $(self).addClass("hidden");
+                                swal("Thành Công", "Cài đặt trận này cho giải đấu Bàn Thắng Vàng thành công", "success");
+                            }
+                            else {
+                                swal("Lỗi", result.message, "error");
+                            }
+                        }
+                    })
+                });
+                $(document).on("submit", "form[name=formAddForProphet1x2Game]", function (e) {
+                    e.preventDefault();
+                    var td = $(this).parent();
+                    var match_id = $(td).attr("data-match_id");
+                    var self = $(this);
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        method: $(this).attr("method"),
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.status == 1) {
+                                $("#label_status_prophet1x2Game" + match_id).removeClass("hidden");
+                                $(self).addClass("hidden");
+                                swal("Thành Công", "Cài đặt trận này cho giải đấu Nhà Tiên Tri 1x2 thành công", "success");
+                            }
+                            else {
+                                swal("Lỗi", result.message, "error");
+                            }
+                        }
+                    })
+                });
+            });
+        });
+    </script>
+}
+
+<section class="content" ng-init="InitForAdmin('calendar')">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <label for="countryId">Chọn Quốc Gia</label>
+                            <select class="form-control"
+                                    ng-model="countryId"
+                                    ng-options="item as item.country_name for item in listCountries track by item.country_id"
+                                    ng-change="getLeagueAdmin('calendar')"></select>
+                        </div>
+
+                        <div class="form-group col-lg-3">
+                            <label for="countryId">Chọn Giải Đấu</label>
+                            <select class="form-control"
+                                    id="leagueId"
+                                    name="leagueId"
+                                    ng-model="leagueId"
+                                    ng-options="item as item.league_name for item in listLeague track by item.league_id"
+                                    ng-change="getEvent()"></select>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="countryId">Chọn Ngày</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" readonly id="reservation" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <label for="countryId">Tìm</label>
+                            <button class="btn btn-block btn-primary" id="btnXem" ng-click="getEvent('old')"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+
+        @*<div class="col-xs-12" ng-show="!tt">
+                <div class="alert alert-danger alert-dismissable">
+                    <h4><i class="icon fa fa-ban"></i> Lỗi</h4>
+                    {{listEvent}}
+                </div>
+            </div>*@
+
+        <div class="col-xs-12" id="divMain" ng-show="tt">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Lịch Thi Đấu</h3>
+                </div>
+                <div class="box-body">
+                    <table id="events" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Vòng Đấu</th>
+                                <th>Đội Nhà</th>
+                                <th>Đội Khách</th>
+                                <th>Trạng Thái</th>
+                                <th class="text-center">Tỉ Số</th>
+                                <th>Thời Gian</th>
+                                <th class="text-center" title="Chọn trận này cho giải Bàn Thắng Vàng đang kích hoạt">Sử Dụng Cho Giải BTV</th>
+                                <th class="text-center" title="Chọn trận này cho giải Nhà Tiên Tri 1x2">Sử Dụng Cho Giải NTT 1x2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in listEvent track by $index">
+                                <td>{{item.match_round}}</td>
+                                <td>{{item.match_hometeam_name}}</td>
+                                <td>{{item.match_awayteam_name}}</td>
+                                <td>{{item.match_status}}</td>
+                                <td class="text-center">{{item.match_hometeam_score  + ' - ' + item.match_awayteam_score}}</td>
+                                <td>{{item.match_time + ' ' + item.match_date}}</td>
+                                <td class="text-center" data-status-golden_goalgames="{{ item.match_id }}" data-match_id="{{ item.match_id }}">
+                                    <form data-show="item.match_status == ''" action="@Url.Action("AddForGoldenGoalGame","Game")" class="hidden" method="post" name="formAddForGoldenGoalGame" id="formAddForGoldenGoalGame_{{item.match_id}}">
+                                        <input type="hidden" name="match_id" value="{{ item.match_id }}" />
+                                        <input type="hidden" name="league_id" value="{{ item.league_id }}" />
+                                        <input type="hidden" name="league_name" value="{{ item.league_name }}" />
+                                        <input type="hidden" name="match_date" value="{{ item.match_date }}" />
+                                        <input type="hidden" name="match_status" value="{{ item.match_status }}" />
+                                        <input type="hidden" name="match_time" value="{{ item.match_time }}" />
+                                        <input type="hidden" name="match_hometeam_name" value="{{ item.match_hometeam_name }}" />
+                                        <input type="hidden" name="match_awayteam_name" value="{{ item.match_awayteam_name }}" />
+                                        <input type="hidden" name="match_hometeam_id" value="{{ item.match_hometeam_id }}" />
+                                        <input type="hidden" name="match_awayteam_id" value="{{ item.match_awayteam_id }}" />
+                                        <input type="hidden" name="match_hometeam_score" value="{{ item.match_hometeam_score }}" />
+                                        <input type="hidden" name="match_awayteam_score" value="{{ item.match_awayteam_score }}" />
+                                        <button type="submit" class="btn btn-warning btn-sm">Chọn</button>
+                                    </form>
+                                    <label data-show="item.match_status == ''" class="text-success hidden" id="label_status_goldenGoalGames{{ item.match_id }}"><i class="fa fa-check"></i> Đã chọn </label>
+                                </td>
+                                <td class="text-center" data-status-prophet1x2Game="{{ item.match_id }}" data-match_id="{{ item.match_id }}">   
+                                    <form data-show="item.match_status == ''" action="@Url.Action("AddForProphet1x2Game","Game")" class="hidden" method="post" name="formAddForProphet1x2Game" id="formAddForProphet1x2Game_{{item.match_id}}">
+                                        <input type="hidden" name="match_id" value="{{ item.match_id }}" />
+                                        <input type="hidden" name="league_id" value="{{ item.league_id }}" />
+                                        <input type="hidden" name="league_name" value="{{ item.league_name }}" />
+                                        <input type="hidden" name="match_date" value="{{ item.match_date }}" />
+                                        <input type="hidden" name="match_time" value="{{ item.match_time }}" />
+                                        <input type="hidden" name="match_status" value="{{ item.match_status }}" />
+                                        <input type="hidden" name="match_hometeam_name" value="{{ item.match_hometeam_name }}" />
+                                        <input type="hidden" name="match_awayteam_name" value="{{ item.match_awayteam_name }}" />
+                                        <input type="hidden" name="match_hometeam_id" value="{{ item.match_hometeam_id }}" />
+                                        <input type="hidden" name="match_awayteam_id" value="{{ item.match_awayteam_id }}" />
+                                        <button type="submit" class="btn btn-warning btn-sm">Chọn</button>
+                                    </form>
+                                    <label data-show="item.match_status == ''"  class="text-success hidden" id="label_status_prophet1x2Game{{ item.match_id }}"><i class="fa fa-check"></i> Đã chọn </label>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div><!-- /.row -->
+</section>
+

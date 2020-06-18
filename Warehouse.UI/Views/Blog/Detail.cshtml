@@ -1,0 +1,49 @@
+﻿@model Blog
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bdcmb-bg4 page-head parallax overlay">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h3>@ViewBag.Title</h3>
+                </div>
+            </div>
+            <!-- /.colour-service-1-->
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li>।</li>
+                    <li>@ViewBag.Title</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</div>
+
+<div class="news-area pad60">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-9">
+                <div class="sports-news mb60">
+                    <div class="sports-title mb20">
+                        <h3>@Model.Title</h3>
+                        <p>Đăng bởi <span>@Model.Author</span> / @(Warehouse.Common.Format.FormatDateTime(Model.DateCreated)) </p>
+                    </div>
+                    <article>
+                        @Html.Raw(Model.Content)
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+                @Html.Action("_BlogSidebarPartial")
+            </div>
+        </div>
+    </div>
+</div>

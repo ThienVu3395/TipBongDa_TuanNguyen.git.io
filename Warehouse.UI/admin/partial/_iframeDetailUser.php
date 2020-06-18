@@ -1,0 +1,1 @@
+<iframe border="0" width="100%" height="600" src="<?=base_url_admin?>/user/details&cAccName=<?= $cAccName ?>"></iframe>
